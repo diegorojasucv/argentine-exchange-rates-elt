@@ -35,3 +35,6 @@ capitalisation_policy = lower
 
 [sqlfluff:rules:ambiguous.column_references]  # Number in group by
 group_by_and_order_by_style = implicit
+
+[sqlfluff:templater:dbt]
+project_dir = argentine-exchange-rates-elt/argentine-exchange-rates-elt/dbt/jaffle_shop
