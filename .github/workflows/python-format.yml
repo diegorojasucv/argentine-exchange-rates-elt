@@ -1,10 +1,10 @@
-name: SQL Lint
+name: Python Format
 
 on:
   pull_request:
 
 jobs:
-  lint-sql:
+  format-python:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,13 +16,14 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install SQLFluff
+    - name: Install Black
       run: |
-        pip install sqlfluff
+        pip install black
 
-    - name: Run SQLFluff linting
+    - name: Format code with Black
       run: |
-        sqlfluff lint --config .sqlfluff
+        black .
 
-    - name: Show SQLFluff version
-      run: sqlfluff --version
+    - name: Check for code changes
+      run: |
+        git diff --exit-code
