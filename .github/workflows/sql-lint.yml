@@ -29,6 +29,9 @@ jobs:
       continue-on-error: true
       run: |
         sqlfluff lint --config .sqlfluff
+
+    - name: Save SQLFluff Lint output in report file
+      run: |
         sqlfluff lint --config .sqlfluff > lint-report.txt || true
         if grep -q "L:" lint-report.txt; then
           echo "lint_status=failure" >> $GITHUB_ENV
