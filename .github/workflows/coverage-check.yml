@@ -23,8 +23,22 @@ jobs:
 
     - name: Run tests and generate coverage report
       run: |
-        pytest --cov=./
-
+        pytest --cov=./ > coverage-report.txt
+  
     - name: Fail if coverage is below threshold
       run: |
         coverage report --fail-under=80
+
+    - name: Comment on Pull Request with Coverage Report
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const coverageReport = fs.readFileSync('coverage-report.txt', 'utf8');
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `### Test Coverage Report:\n\`\`\`\n${coverageReport}\n\`\`\``
+          })
