@@ -18,8 +18,8 @@ jobs:
 
     - name: Install SQLFluff
       run: |
-        python -m pip install --upgrade pip
         pip install sqlfluff
+        pip install sqlfluff-templater-dbt 
 
     - name: Run SQLFluff linting
       run: |
