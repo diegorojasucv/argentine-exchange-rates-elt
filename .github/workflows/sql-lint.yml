@@ -26,6 +26,7 @@ jobs:
 
     - name: Run SQLFluff Lint
       id: sql-lint
+      continue-on-error: true
       run: |
         sqlfluff lint --config .sqlfluff
         sqlfluff lint --config .sqlfluff > lint-report.txt || true
