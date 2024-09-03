@@ -37,4 +37,4 @@ capitalisation_policy = lower
 group_by_and_order_by_style = implicit
 
 [sqlfluff:templater:dbt]
-project_dir = argentine-exchange-rates-elt/dbt/jaffle_shop
+project_dir = dbt/jaffle_shop/dbt_project.yml
