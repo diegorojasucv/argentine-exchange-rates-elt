@@ -37,15 +37,18 @@ jobs:
     - name: Show SQLFluff version
       run: sqlfluff --version
   
-    - name: Comment on Pull Request
+    - name: Comment on Pull Request with Lint Report
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v6
       with:
         script: |
-          const status = process.env.lint_status === 'success' ? "✅ SQL Lint Passed" : "❌ SQL Lint Failed"
+          const fs = require('fs');
+          const lintReport = fs.readFileSync('lint-report.txt', 'utf8');
+          const status = process.env.lint_status === 'success' ? "✅ SQL Lint Passed" : "❌ SQL Lint Failed";
+          const commentBody = `${status}\n\n### Lint Report:\n\`\`\`\n${lintReport}\n\`\`\``;
           github.rest.issues.createComment({
             issue_number: context.issue.number,
             owner: context.repo.owner,
             repo: context.repo.repo,
-            body: status + "\n\nCheck the SQL linting report in the GitHub Actions logs."
+            body: commentBody
           })
