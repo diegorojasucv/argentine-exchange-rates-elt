@@ -23,11 +23,11 @@ jobs:
     - name: Run SQLFluff Lint
       id: sql-lint
       run: |
-        sqlfluff lint --config .sqlfluff > lint-report.txt
-        if [ $? -eq 0 ]; then
-          echo "lint_status=success" >> $GITHUB_ENV
-        else
+        sqlfluff lint --config .sqlfluff > lint-report.txt || true
+        if grep -q "L:" lint-report.txt; then
           echo "lint_status=failure" >> $GITHUB_ENV
+        else
+          echo "lint_status=success" >> $GITHUB_ENV
         fi
 
     - name: Show SQLFluff version
