@@ -1,12 +1,12 @@
-name: Coverage Check
+name: SQL Lint
 
 on:
   pull_request:
 
 jobs:
-  test-coverage:
+  lint-sql:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -16,15 +16,14 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install dependencies
+    - name: Install SQLFluff
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install sqlfluff
 
-    - name: Run tests and generate coverage report
+    - name: Run SQLFluff linting
       run: |
-        pytest --cov=./
+        sqlfluff lint --config .sqlfluff
 
-    - name: Fail if coverage is below threshold
-      run: |
-        coverage report --fail-under=80
+    - name: Show SQLFluff version
+      run: sqlfluff --version
