@@ -3,8 +3,12 @@ name: SQL Lint
 on:
   pull_request:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  lint-sql:
+  sql-lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,9 +24,35 @@ jobs:
       run: |
         pip install sqlfluff
 
-    - name: Run SQLFluff linting
+    - name: Save SQLFluff Lint output in report file
       run: |
-        sqlfluff lint --config .sqlfluff
+        sqlfluff lint --config .sqlfluff > lint-report.txt || true
+        if grep -q "L:" lint-report.txt; then
+          echo "lint_status=failure" >> $GITHUB_ENV
+        else
+          echo "lint_status=success" >> $GITHUB_ENV
+        fi
 
     - name: Show SQLFluff version
       run: sqlfluff --version
+  
+    - name: Comment on Pull Request with Lint Report
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const lintReport = fs.readFileSync('lint-report.txt', 'utf8');
+          const status = process.env.lint_status === 'success' ? "✅ SQL Lint Passed" : "❌ SQL Lint Failed";
+          const commentBody = `${status}\n\n### Lint Report:\n\`\`\`\n${lintReport}\n\`\`\``;
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: commentBody
+          })
+
+    - name: Run SQLFluff Lint
+      id: sql-lint
+      run: |
+        sqlfluff lint --config .sqlfluff
