@@ -28,10 +28,6 @@ jobs:
     - name: Run tests and generate coverage report
       run: |
         pytest --cov=./ > coverage-report.txt
-  
-    - name: Fail if coverage is below threshold
-      run: |
-        coverage report --fail-under=80
 
     - name: Comment on Pull Request with Coverage Report
       if: github.event_name == 'pull_request'
@@ -46,3 +42,8 @@ jobs:
             repo: context.repo.repo,
             body: `### Test Coverage Report:\n\`\`\`\n${coverageReport}\n\`\`\``
           })
+  
+    - name: Fail if coverage is below threshold
+      run: |
+        coverage report --fail-under=80
+
