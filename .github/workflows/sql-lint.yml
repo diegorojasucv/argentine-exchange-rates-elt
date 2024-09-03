@@ -21,6 +21,11 @@ jobs:
         pip install sqlfluff
         pip install sqlfluff-templater-dbt 
 
+    - name: Set DBT Profiles Directory
+      run: |
+        mkdir -p argentine-exchange-rates-elt/argentine-exchange-rates-elt/dbt/jaffle_shop  # Ajusta esta ruta si es necesario
+        echo "DBT_PROFILES_DIR=$(pwd)/argentine-exchange-rates-elt/argentine-exchange-rates-elt/dbt/jaffle_shop" >> $GITHUB_ENV
+
     - name: Run SQLFluff linting
       run: |
         sqlfluff lint --config .sqlfluff

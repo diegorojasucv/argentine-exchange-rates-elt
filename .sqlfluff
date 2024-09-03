@@ -5,9 +5,6 @@ runaway_limit = 10
 max_line_length = 80
 indent_unit = space
 
-[dbt]
-dbt_project_dir = argentine-exchange-rates-elt/argentine-exchange-rates-elt/dbt/jaffle_shop
-
 [sqlfluff:indentation]
 tab_space_size = 4
 
