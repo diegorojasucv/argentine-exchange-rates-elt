@@ -24,12 +24,6 @@ jobs:
       run: |
         pip install sqlfluff
 
-    - name: Run SQLFluff Lint
-      id: sql-lint
-      continue-on-error: true
-      run: |
-        sqlfluff lint --config .sqlfluff
-
     - name: Save SQLFluff Lint output in report file
       run: |
         sqlfluff lint --config .sqlfluff > lint-report.txt || true
@@ -57,3 +51,8 @@ jobs:
             repo: context.repo.repo,
             body: commentBody
           })
+
+    - name: Run SQLFluff Lint
+      id: sql-lint
+      run: |
+        sqlfluff lint --config .sqlfluff
