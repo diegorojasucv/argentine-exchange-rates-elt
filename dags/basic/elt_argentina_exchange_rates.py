@@ -54,7 +54,7 @@ def elt_argentina_exchange_rates() -> None:
     )
 
     dbt_task = DbtTaskGroup(
-        group_id="my_jaffle_shop_project",
+        group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
         profile_config=airflow_db,
         execution_config=venv_execution_config,
