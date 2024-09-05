@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: stg_exchange_rates_cripto_usdt_ars
+    description: >
+      Stage with the necessary transformations to have the USDT/ARS exchange rates.
+    tests:
+      - dbt_utils.recency:
+          datepart: minute
+          field: updated_at
+          interval: 30
+          config:
+            severity: warn
+            store_failures: true
+            schema: tests_failures
+    columns:
+      - name: exchange_name
+        description: "Names of the exchange rates."
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: bid_price
+        description: "Sale price reported by the exchange, excluding fees."
+        data_type: FLOAT
+        tests:
+          - not_null
+      - name: total_bid_price
+        description: "Final sale price including transfer and trade fees"
+        data_type: FLOAT
+        tests:
+          - not_null
+      - name: ask_price
+        description: "Purchase price reported by the exchange, excluding fees"
+        data_type: FLOAT
+        tests:
+          - not_null
+      - name: total_ask_price
+        description: "Final purchase price including transfer and trade fees."
+        data_type: FLOAT
+        tests:
+          - not_null
+      - name: updated_at
+        description: "Timestamp when the data was last updated."
+        data_type: TIMESTAMP_TZ
+        tests:
+          - not_null
+      - name: extracted_at
+        description: "Timestamp when the data was last updated."
+        data_type: TIMESTAMP_TZ
+        tests:
+          - not_null
