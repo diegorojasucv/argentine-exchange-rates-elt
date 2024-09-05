@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: postgres_source
+    description: Raw data from APIs.
+    database: postgres
+    schema: raw
+    tables:
+      - name: usdt_ars_prices
+        description: USDT-ARS prices for exchange rates.
+        columns:
+          - name: exchange_rate
+            data_tests:
+              - not_null
+          - name: ask_price
+            data_tests:
+              - not_null
+          - name: total_ask_price
+            data_tests:
+              - not_null
+          - name: bid_price
+            data_tests:
+              - not_null
+          - name: total_bid_price
+            data_tests:
+              - not_null
+          - name: update_at
+            data_tests:
+              - not_null
+          - name: extracted_at
+            data_tests:
+              - not_null

@@ -19,7 +19,7 @@ db_config = {
     "dbname": "postgres",
     "user": "postgres",
     "password": "postgres",
-    "schema": "dbt",
+    "schema": "raw",
 }
 
 
