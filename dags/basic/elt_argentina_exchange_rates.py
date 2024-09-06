@@ -12,15 +12,13 @@ with DAG(
 ) as dag:
 
     extract_load_trigger = TriggerDagRunOperator(
-        task_id="elt_criptoya",
-        trigger_dag_id="elt_criptoya",
-        conf={"message": "Hello World"},
+        task_id="elt_criptoya_usdt",
+        trigger_dag_id="elt_criptoya_usdt",
     )
 
     dbt_trigger = TriggerDagRunOperator(
         task_id="dbt_trigger",
         trigger_dag_id="dbt_trigger",
-        conf={"message": "Hello World"},
     )
 
     extract_load_trigger >> dbt_trigger
