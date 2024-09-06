@@ -1,13 +1,5 @@
-from datetime import datetime, timedelta
-
 from airflow.decorators import dag
-from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
-
-from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
-
-from include.profiles import airflow_db
-from include.constants import jaffle_shop_path, venv_execution_config
 
 from functions.extract_data import fetch_data_from_api
 from functions.transform_data import transform_data
