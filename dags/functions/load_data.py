@@ -34,8 +34,8 @@ def load_data_to_postgres(df_json, db_config):
         exchange_name VARCHAR NOT NULL,
         ask_price DECIMAL(18, 8) NOT NULL,
         total_ask_price DECIMAL(18, 8) NOT NULL,
-        bid DECIMAL(18, 8) NOT NULL,
         bid_price DECIMAL(18, 8) NOT NULL,
+        total_bid_price DECIMAL(18, 8) NOT NULL,
         updated_at TIMESTAMP NOT NULL,
         extracted_at TIMESTAMP NOT NULL
     );
@@ -46,7 +46,7 @@ def load_data_to_postgres(df_json, db_config):
 
     # Insertar los datos en la tabla
     insert_query = """
-    INSERT INTO usdt_ars_prices (exchange_name, ask_price, total_ask_price, bid, bid_price, updated_at, extracted_at)
+    INSERT INTO usdt_ars_prices (exchange_name, ask_price, total_ask_price, bid_price, total_bid_price, updated_at, extracted_at)
     VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
 

@@ -19,7 +19,7 @@ db_config = {
     "dbname": "postgres",
     "user": "postgres",
     "password": "postgres",
-    "schema": "dbt",
+    "schema": "raw",
 }
 
 
@@ -27,7 +27,7 @@ db_config = {
     schedule_interval="@daily",
     start_date=datetime(2023, 1, 1),
     catchup=False,
-    tags=["simple"],
+    tags=["etl_criptoya"],
 )
 def elt_argentina_exchange_rates() -> None:
     """
@@ -54,9 +54,10 @@ def elt_argentina_exchange_rates() -> None:
     )
 
     dbt_task = DbtTaskGroup(
-        group_id="my_jaffle_shop_project",
+        group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
         profile_config=airflow_db,
+        operator_args={"install_deps": True},
         execution_config=venv_execution_config,
         render_config=RenderConfig(emit_datasets=False),
     )
