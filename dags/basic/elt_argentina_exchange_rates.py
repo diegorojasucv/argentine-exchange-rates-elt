@@ -57,9 +57,7 @@ def elt_argentina_exchange_rates() -> None:
         group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
         profile_config=airflow_db,
-        operator_args={ 
-            "install_deps": True
-        },
+        operator_args={"install_deps": True},
         execution_config=venv_execution_config,
         render_config=RenderConfig(emit_datasets=False),
     )
