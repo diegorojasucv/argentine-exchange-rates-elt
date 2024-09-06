@@ -1,68 +1,26 @@
 from datetime import datetime, timedelta
 
-from airflow.decorators import dag
-from airflow.operators.empty import EmptyOperator
-from airflow.operators.python import PythonOperator
+from airflow.models.dag import DAG
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
-from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
-
-from include.profiles import airflow_db
-from include.constants import jaffle_shop_path, venv_execution_config
-
-from functions.extract_data import fetch_data_from_api
-from functions.transform_data import transform_data
-from functions.load_data import load_data_to_postgres
-
-db_config = {
-    "host": "postgres",
-    "port": 5432,
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "postgres",
-    "schema": "raw",
-}
-
-
-@dag(
+with DAG(
+    dag_id="elt_argentina_exchange_rates",
     schedule_interval="@daily",
-    start_date=datetime(2023, 1, 1),
+    start_date=datetime(2024, 9, 5),
     catchup=False,
-    tags=["etl_criptoya"],
-)
-def elt_argentina_exchange_rates() -> None:
-    """
-    The simplest example of using Cosmos to render a dbt project as a TaskGroup.
-    """
-    extract_task = PythonOperator(
-        task_id="extrack_data_from_api",
-        python_callable=fetch_data_from_api,
+    tags=["main_elt"],
+) as dag:
+
+    extract_load_trigger = TriggerDagRunOperator(
+        task_id="elt_criptoya",
+        trigger_dag_id="elt_criptoya",
+        conf={"message": "Hello World"},
     )
 
-    transform_task = PythonOperator(
-        task_id="transform_data",
-        python_callable=transform_data,
-        op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extrack_data_from_api') }}"},
+    dbt_trigger = TriggerDagRunOperator(
+        task_id="dbt_trigger",
+        trigger_dag_id="dbt_trigger",
+        conf={"message": "Hello World"},
     )
 
-    load_task = PythonOperator(
-        task_id="load_data_to_postgres",
-        python_callable=load_data_to_postgres,
-        op_kwargs={
-            "df_json": "{{ ti.xcom_pull(task_ids='transform_data') }}",
-            "db_config": db_config,
-        },
-    )
-
-    dbt_task = DbtTaskGroup(
-        group_id="dbt_project",
-        project_config=ProjectConfig(jaffle_shop_path),
-        profile_config=airflow_db,
-        operator_args={"install_deps": True},
-        execution_config=venv_execution_config,
-        render_config=RenderConfig(emit_datasets=False),
-    )
-
-    extract_task >> transform_task >> load_task >> dbt_task
-
-
-elt_argentina_exchange_rates()
+    extract_load_trigger >> dbt_trigger
