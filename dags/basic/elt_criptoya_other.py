@@ -17,13 +17,13 @@ db_config = {
 
 
 @dag(
-    dag_id="elt_criptoya_mep",
+    dag_id="elt_criptoya_other",
     catchup=False,
     tags=["criptoya"],
 )
-def elt_criptoya_mep() -> None:
+def elt_criptoya_other() -> None:
     """
-    ETL for the mep-ars prices.
+    ETL for other dollar prices.
     """
 
     extract_task = PythonOperator(
@@ -40,8 +40,8 @@ def elt_criptoya_mep() -> None:
     )
 
     load_task = PythonOperator(
-        task_id="load_mep_prices_to_postgres",
-        python_callable=load_mep_prices_to_postgres,
+        task_id="load_other_prices_to_postgres",
+        python_callable=load_other_prices_to_postgres,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_mep_usd_from_criptoya_api') }}",
             "db_config": db_config,
@@ -51,4 +51,4 @@ def elt_criptoya_mep() -> None:
     extract_task >> transform_task >> load_task
 
 
-elt_criptoya_mep()
+elt_criptoya_other()
