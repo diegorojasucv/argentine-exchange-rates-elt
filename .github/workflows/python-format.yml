@@ -28,13 +28,14 @@ jobs:
       run: |
         black .
 
-    - name: Save Black output in report file
+    - name: Format code with Black and save report
       run: |
-        git diff --exit-code > lint-report.txt || true
-        if grep -q "L:" lint-report.txt; then
+        black . --check --diff > lint-report.txt || true
+        if grep -q "reformatted" lint-report.txt; then
           echo "black_status=failure" >> $GITHUB_ENV
-        else:
+        else
           echo "black_status=success" >> $GITHUB_ENV
+          echo "No issues found. Code is already formatted." > lint-report.txt
         fi
 
     - name: Comment on Pull Request with Black Report
