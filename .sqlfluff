@@ -4,7 +4,7 @@ templater = jinja
 runaway_limit = 10
 max_line_length = 100
 indent_unit = tab
-exclude_rules = LT02
+exclude_rules = LT02, ST06
 ignore = parsing, templating
 
 [sqlfluff:templater:jinja]
