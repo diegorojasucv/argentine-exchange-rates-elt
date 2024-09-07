@@ -66,3 +66,24 @@ sources:
           - name: extracted_at
             data_tests:
               - not_null
+      - name: bcra_indicators
+        description: Main indicators from BCRA.
+        columns:
+          - name: id_variable
+            data_tests:
+              - not_null
+          - name: cd_serie
+            data_tests:
+              - not_null
+          - name: description
+            data_tests:
+              - not_null
+          - name: valor
+            data_tests:
+              - not_null
+          - name: update_at
+            data_tests:
+              - not_null
+          - name: extracted_at
+            data_tests:
+              - not_null
