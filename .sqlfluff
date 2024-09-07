@@ -2,7 +2,7 @@
 dialect = duckdb
 templater = jinja
 runaway_limit = 10
-max_line_length = 90
+max_line_length = 100
 indent_unit = tab
 exclude_rules = LT02
 ignore = parsing, templating

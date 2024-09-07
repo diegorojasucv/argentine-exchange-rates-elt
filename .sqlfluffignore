@@ -1,0 +1,10 @@
+target/
+dbt_modules/
+dbt_packages/
+macros/
+logs/
+.gitignore
+.env
+.venv
+env/
+venv/
