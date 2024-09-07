@@ -17,13 +17,13 @@ db_config = {
 
 
 @dag(
-    dag_id="elt_criptoya_mep",
+    dag_id="elt_bcra_indicators",
     catchup=False,
-    tags=["criptoya"],
+    tags=["bcra"],
 )
-def elt_criptoya_mep() -> None:
+def elt_bcra_indicators() -> None:
     """
-    ETL for the mep-ars prices.
+    ETL for BCRA indicators.
     """
 
     extract_task = PythonOperator(
@@ -49,4 +49,4 @@ def elt_criptoya_mep() -> None:
     extract_task >> transform_task >> load_task
 
 
-elt_criptoya_mep()
+elt_bcra_indicators()

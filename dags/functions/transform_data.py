@@ -1,4 +1,5 @@
 import pandas as pd
+import logging
 import json
 import ast
 from datetime import datetime
@@ -62,7 +63,7 @@ def transform_other_usd_from_criptoya_api(data, **kwargs):
 def transform_bcra_from_api(data, **kwargs):
 
     data_dict = ast.literal_eval(data)
-    df = pd.DataFrame.from_dict(data_dict)
+    df = pd.DataFrame.from_dict(data_dict["results"])
     df["updated_at"] = pd.to_datetime(df["fecha"]).astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df = df[
