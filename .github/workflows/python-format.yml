@@ -35,7 +35,7 @@ jobs:
           echo "black_status=failure" >> $GITHUB_ENV
         else
           echo "black_status=success" >> $GITHUB_ENV
-          echo "No issues found. Code is already formatted." > lint-report.txt
+          echo "No issues found!" > lint-report.txt
         fi
 
     - name: Comment on Pull Request with Black Report
