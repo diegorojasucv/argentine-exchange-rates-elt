@@ -18,17 +18,10 @@ stage as (
         'Criptoya - MEP' as source_reference,
         coalesce(price, 0) as total_bid_price,
 
-        avg(total_bid_price) over() as avg_total_bid_price,
-
-        convert_timezone(
-            'America/Argentina/Buenos_Aires',
-            to_timestamp(updated_at)
-        ) as updated_ars_at,
-
-        convert_timezone(
-            'America/Argentina/Buenos_Aires',
-            to_timestamp(extracted_at)
-        ) as extracted_at
+        updated_at at time zone 'America/Argentina/Buenos_Aires'
+            as updated_ars_at,
+        extracted_at at time zone 'America/Argentina/Buenos_Aires'
+            as extracted_ars_at
 
     from source
 
