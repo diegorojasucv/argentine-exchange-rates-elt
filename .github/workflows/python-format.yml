@@ -24,6 +24,30 @@ jobs:
       run: |
         black .
 
+    - name: Save Black output in report file
+      run: |
+        git diff --exit-code > lint-report.txt || true
+        if grep -q "L:" lint-report.txt; then
+          echo "black_status=failure" >> $GITHUB_ENV
+        else:
+          echo "black_status=success" >> $GITHUB_ENV
+        fi
+
+    - name: Comment on Pull Request with Black Report
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const lintReport = fs.readFileSync('lint-report.txt', 'utf8');
+          const status = process.env.black_status === 'success' ? "✅ Python Lint Passed" : "❌ Python Lint Failed";
+          const commentBody = `${status}\n\n### Lint Report:\n\`\`\`\n${lintReport}\n\`\`\``;
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: commentBody
+          });
+
     - name: Check for code changes
       run: |
         git diff --exit-code
