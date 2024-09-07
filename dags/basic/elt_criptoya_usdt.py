@@ -19,7 +19,7 @@ db_config = {
 @dag(
     dag_id="elt_criptoya_usdt",
     catchup=False,
-    tags=["elt_criptoya_usdt"],
+    tags=["criptoya"],
 )
 def elt_criptoya_usdt() -> None:
     """

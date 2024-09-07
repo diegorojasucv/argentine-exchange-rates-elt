@@ -53,6 +53,7 @@ def transform_other_usd_from_criptoya_api(data, **kwargs):
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    df = df.fillna(0)
     df = df[["index", "price", "ask", "bid", "updated_at", "extracted_at"]]
     df_json = df.to_json()
     return df_json
