@@ -32,8 +32,8 @@ def elt_criptoya_other() -> None:
     )
 
     transform_task = PythonOperator(
-        task_id="transform_mep_usd_from_criptoya_api",
-        python_callable=transform_mep_usd_from_criptoya_api,
+        task_id="transform_other_usd_from_criptoya_api",
+        python_callable=transform_other_usd_from_criptoya_api,
         op_kwargs={
             "data": "{{ ti.xcom_pull(task_ids='extract_usd_from_criptoya_api') }}"
         },
@@ -43,7 +43,7 @@ def elt_criptoya_other() -> None:
         task_id="load_other_prices_to_postgres",
         python_callable=load_other_prices_to_postgres,
         op_kwargs={
-            "df_json": "{{ ti.xcom_pull(task_ids='transform_mep_usd_from_criptoya_api') }}",
+            "df_json": "{{ ti.xcom_pull(task_ids='transform_other_usd_from_criptoya_api') }}",
             "db_config": db_config,
         },
     )
