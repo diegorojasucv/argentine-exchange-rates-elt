@@ -30,3 +30,18 @@ sources:
           - name: extracted_at
             data_tests:
               - not_null
+      - name: mep_ars_prices
+        description: Mep prices for each bond.
+        columns:
+          - name: mep_name
+            data_tests:
+              - not_null
+          - name: price
+            data_tests:
+              - not_null
+          - name: update_at
+            data_tests:
+              - not_null
+          - name: extracted_at
+            data_tests:
+              - not_null

@@ -7,7 +7,7 @@ models:
     tests:
       - dbt_utils.recency:
           datepart: minute
-          field: updated_at
+          field: extracted_ars_at
           interval: 30
           config:
             severity: warn
@@ -39,12 +39,56 @@ models:
         data_type: FLOAT
         tests:
           - not_null
-      - name: updated_at
+      - name: updated_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
         tests:
           - not_null
-      - name: extracted_at
+      - name: extracted_ars_at
+        description: "Timestamp when the data was last updated."
+        data_type: TIMESTAMP_TZ
+        tests:
+          - not_null
+
+  - name: stg_exchange_rates_mep_usd_ars
+    description: >
+      Stage with the necessary transformations to have the MEP exchange rates.
+    tests:
+      - dbt_utils.recency:
+          datepart: minute
+          field: extracted_ars_at
+          interval: 30
+          config:
+            severity: warn
+            store_failures: true
+            schema: tests_failures
+    columns:
+      - name: mep_name
+        description: "Names of type of MEP."
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: indicator_description
+        description: "Description of the indicator."
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: source_reference
+        description: "Source of data (e.g BCRA, Criptoya)"
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: total_bid_price
+        description: "Final sale price including transfer and trade fees"
+        data_type: FLOAT
+        tests:
+          - not_null
+      - name: updated_ars_at
+        description: "Timestamp when the data was last updated."
+        data_type: TIMESTAMP_TZ
+        tests:
+          - not_null
+      - name: extracted_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
         tests:
