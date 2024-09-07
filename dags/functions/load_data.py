@@ -169,15 +169,15 @@ def load_bcra_prices_to_postgres(df_json, db_config):
     """
     table_name = "bcra_indicators"
     table_schema = """
-        id_variable INTEGER NOT NULL,
-        cd_serie INTEGER NOT NULL,
+        indicator_id INTEGER NOT NULL,
+        serie_id INTEGER NOT NULL,
         descripcion VARCHAR NOT NULL,
         valor DECIMAL(18, 8) NOT NULL,
         updated_at TIMESTAMP NOT NULL,
         extracted_at TIMESTAMP NOT NULL
     """
     insert_query = """
-        INSERT INTO bcra_indicators (id_variable, cd_serie, descripcion, valor, updated_at, extracted_at)
+        INSERT INTO bcra_indicators (indicator_id, serie_id, descripcion, valor, updated_at, extracted_at)
         VALUES (%s, %s, %s, %s, %s, %s)
     """
     load_prices_to_postgres(df_json, db_config, table_name, table_schema, insert_query)
