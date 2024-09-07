@@ -1,5 +1,4 @@
 import pandas as pd
-import logging
 import json
 import ast
 from datetime import datetime
@@ -25,22 +24,18 @@ def transform_mep_usd_from_criptoya_api(data, **kwargs):
 
     mep_al30_ci = data_dict["mep"]["al30"]["ci"]
     mep_gd30_ci = data_dict["mep"]["gd30"]["ci"]
-    mep_lede_ci = data_dict["mep"]["lede"]["ci"]
 
     mep_al30_48hs = data_dict["mep"]["al30"]["24hs"]
     mep_gd30_48hs = data_dict["mep"]["gd30"]["24hs"]
-    mep_lede_48hs = data_dict["mep"]["lede"]["24hs"]
 
     data = {
         "mep al30 ci": mep_al30_ci,
         "mep gd30 ci": mep_gd30_ci,
-        "mep lede ci": mep_lede_ci,
         "mep al30 24 hs": mep_al30_48hs,
         "mep gd30 24 hs": mep_gd30_48hs,
-        "mep lede 24 hs": mep_lede_48hs,
     }
 
-    df = pd.DataFrame.from_dict(data_dict)
+    df = pd.DataFrame.from_dict(data)
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

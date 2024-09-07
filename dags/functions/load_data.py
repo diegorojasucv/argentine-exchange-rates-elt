@@ -62,6 +62,7 @@ def load_prices_to_postgres(df_json, db_config, table_name, table_schema, insert
         table_schema (str): Schema definition of the table.
         insert_query (str): SQL query for inserting the data.
     """
+
     df_dict = ast.literal_eval(df_json)
     df = pd.DataFrame.from_dict(df_dict)
 
