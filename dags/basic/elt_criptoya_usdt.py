@@ -1,16 +1,17 @@
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
+from airflow.models import Variable
 
-from functions.extract_data import extract_usdt_from_criptoya_api
-from functions.transform_data import transform_data
-from functions.load_data import load_data_to_postgres
+from functions.extract_data import *
+from functions.transform_data import *
+from functions.load_data import *
 
 db_config = {
-    "host": "postgres",
+    "host": Variable.get("postgres_host"),
     "port": 5432,
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "postgres",
+    "dbname": Variable.get("postgres_dbname"),
+    "user": Variable.get("postgres_user"),
+    "password": Variable.get("postgres_password"),
     "schema": "raw",
 }
 
@@ -31,18 +32,18 @@ def elt_criptoya_usdt() -> None:
     )
 
     transform_task = PythonOperator(
-        task_id="transform_data",
-        python_callable=transform_data,
+        task_id="transform_usdt_from_criptoya_api",
+        python_callable=transform_usdt_from_criptoya_api,
         op_kwargs={
             "data": "{{ ti.xcom_pull(task_ids='extract_usdt_from_criptoya_api') }}"
         },
     )
 
     load_task = PythonOperator(
-        task_id="load_data_to_postgres",
-        python_callable=load_data_to_postgres,
+        task_id="load_usdt_prices_to_postgres",
+        python_callable=load_usdt_prices_to_postgres,
         op_kwargs={
-            "df_json": "{{ ti.xcom_pull(task_ids='transform_data') }}",
+            "df_json": "{{ ti.xcom_pull(task_ids='transform_usdt_from_criptoya_api') }}",
             "db_config": db_config,
         },
     )
