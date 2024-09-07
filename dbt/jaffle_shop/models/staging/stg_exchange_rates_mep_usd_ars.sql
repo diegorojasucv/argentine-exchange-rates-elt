@@ -9,7 +9,7 @@ stage as (
 
     select
 
-        mep_name,
+        mep_name as exchange_rate_name,
 
         'The MEP dollar arises from the buying and
 			selling of bonds and stocks that are traded in the local and

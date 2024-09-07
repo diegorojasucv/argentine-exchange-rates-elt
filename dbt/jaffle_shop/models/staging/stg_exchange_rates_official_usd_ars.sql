@@ -13,7 +13,7 @@ filter_exchange_rates as (
             when indicator_id = 5 then 'Official Wholesale Dollar'
         end as exchange_rate_name,
 
-        description as indicator_description,
+        indicator_description,
         'BCRA' as source_reference,
         valor as total_bid_price,
         updated_at at time zone 'America/Argentina/Buenos_Aires'
