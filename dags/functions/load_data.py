@@ -1,4 +1,5 @@
 import ast
+import logging
 import psycopg2
 import pandas as pd
 
@@ -62,8 +63,15 @@ def load_prices_to_postgres(df_json, db_config, table_name, table_schema, insert
         table_schema (str): Schema definition of the table.
         insert_query (str): SQL query for inserting the data.
     """
+    logging.info("the load_prices_to_postgres function started!")
+    logging.info(df_json)
+    logging.info(type(df_json))
+
     df_dict = ast.literal_eval(df_json)
+    logging.info(df_dict)
     df = pd.DataFrame.from_dict(df_dict)
+
+    logging.info("the dataframe was imported!")
 
     # Connect to the database
     conn, cursor = connect_to_db(db_config)
@@ -72,10 +80,14 @@ def load_prices_to_postgres(df_json, db_config, table_name, table_schema, insert
     create_table_if_not_exists(cursor, table_name, table_schema)
     conn.commit()
 
+    logging.info("The table was created!")
+
     # Insert the data into the table
     data_to_insert = [tuple(row) for row in df.itertuples(index=False, name=None)]
     insert_data_to_table(cursor, insert_query, data_to_insert)
     conn.commit()
+
+    logging.info("The data was inserted to the table!")
 
     # Close the connection
     cursor.close()
