@@ -12,6 +12,9 @@ def transform_usdt_from_criptoya_api(data, **kwargs):
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["time"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    df = df[
+        ["index", "ask", "totalAsk", "bid", "totalBid", "updated_at", "extracted_at"]
+    ]
     df_json = df.to_json()
     return df_json
 
@@ -41,6 +44,7 @@ def transform_mep_usd_from_criptoya_api(data, **kwargs):
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    df = df[["index", "price", "updated_at", "extracted_at"]]
     df_json = df.to_json()
     return df_json
 
@@ -54,6 +58,7 @@ def transform_other_usd_from_criptoya_api(data, **kwargs):
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    df = df[["index", "price", "ask", "bid", "updated_at", "extracted_at"]]
     df_json = df.to_json()
     return df_json
 
@@ -64,5 +69,8 @@ def transform_bcra_from_api(data, **kwargs):
     df = pd.DataFrame.from_dict(data_dict)
     df["updated_at"] = pd.to_datetime(df["fecha"]).astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    df = df[
+        ["idVariable", "cdSerie", "descripcion", "valor", "updated_at", "extracted_at"]
+    ]
     df_json = df.to_json()
     return df_json
