@@ -36,4 +36,10 @@ with DAG(
         trigger_dag_id="dbt_trigger",
     )
 
-    elt_criptoya_usd_trigger >> dbt_trigger
+    (
+        elt_criptoya_usd_trigger
+        >> elt_criptoya_mep_trigger
+        >> elt_criptoya_other_trigger
+        >> elt_bcra_indicators_trigger
+        >> dbt_trigger
+    )
