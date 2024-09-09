@@ -1,0 +1,23 @@
+version: 2
+
+seeds:
+  - name: exchange_names_mapping
+    config:
+      y42:
+        apiVersion: v1
+    columns:
+      - name: EXCHANGE_NAME_ORIGINAL
+        data_type: TEXT
+        tests:
+          - unique
+          - not_null
+        description: Original Exchange Name from the Criptoya API.
+      - name: EXCHANGE_NAME_NEW
+        data_type: TEXT
+        tests:
+          - not_null
+          - unique
+        description: Name of the Exchange renamed from the Cryptoya API.
+    meta:
+      asset_status: verified
+    description: Mapping exchange names from Criptoya.
