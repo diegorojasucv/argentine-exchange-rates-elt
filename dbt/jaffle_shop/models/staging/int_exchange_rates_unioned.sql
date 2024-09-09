@@ -71,14 +71,14 @@ transformations as (
 
             last_value(
                 case when exchange_name = '{{ types_bcra_exchange_rate }}' then total_bid_price end
-            ) over(order by updated_ars_at)
+            ) over (order by updated_ars_at)
                 as {{ dbt_utils.slugify(types_bcra_exchange_rate) }},
 
         {% endfor %}
 
             last_value(
                 case when exchange_name like 'mep%' then avg_total_bid_price end
-            ) over(order by updated_ars_at)
+            ) over (order by updated_ars_at)
                 as avg_mep_dollar,
 
         current_timestamp at time zone 'America/Argentina/Buenos_Aires'
@@ -88,7 +88,7 @@ transformations as (
 
     {% if is_incremental() %}
 
-    where processed_ars_at > (select max(processed_ars_at) from {{ this }})
+    where processed_ars_at > (select max(processed_ars_at) as max_processed_ars_at from {{ this }})
 
     {% endif %}
 
@@ -103,7 +103,7 @@ final as (
 		indicator_description,
 		source_reference,
 		bid_price,
-		totaL_bid_price,
+		total_bid_price,
 		ask_price,
 		total_ask_price,
         avg_total_bid_price,
