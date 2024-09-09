@@ -9,7 +9,7 @@ stage as (
 
     select
 
-        mep_name as exchange_rate_name,
+        mep_name as exchange_name,
 
         'The MEP dollar arises from the buying and
 			selling of bonds and stocks that are traded in the local and
@@ -17,6 +17,7 @@ stage as (
 
         'Criptoya - MEP' as source_reference,
         coalesce(price, 0) as total_bid_price,
+        avg(coalesce(price, 0)) over() as avg_total_bid_price,
 
         updated_at at time zone 'America/Argentina/Buenos_Aires'
             as updated_ars_at,

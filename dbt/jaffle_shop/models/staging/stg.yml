@@ -63,7 +63,7 @@ models:
             store_failures: true
             schema: tests_failures
     columns:
-      - name: mep_name
+      - name: exchange_name
         description: "Names of type of MEP."
         data_type: TEXT
         tests:
@@ -106,7 +106,7 @@ models:
             store_failures: true
             schema: tests_failures
     columns:
-      - name: other_name
+      - name: exchange_name
         description: "Names of the exchange rates."
         data_type: TEXT
         tests:
@@ -154,7 +154,7 @@ models:
             store_failures: true
             schema: tests_failures
     columns:
-      - name: exchange_rate_name
+      - name: exchange_name
         description: "Names of the exchange rates."
         data_type: TEXT
         tests:
