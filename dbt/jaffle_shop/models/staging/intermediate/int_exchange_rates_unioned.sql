@@ -52,7 +52,9 @@ fields_coalesced as (
         avg_total_bid_price,
         avg_total_ask_price,
         updated_ars_at,
-        extracted_ars_at
+        extracted_ars_at,
+        current_timestamp at time zone 'America/Argentina/Buenos_Aires'
+            as processed_ars_at
 
     from exchange_rates_unioned
 
@@ -78,10 +80,7 @@ transformations as (
             last_value(
                 case when exchange_name like 'mep%' then avg_total_bid_price end
             ) over (order by updated_ars_at)
-                as avg_mep_dollar,
-
-        current_timestamp at time zone 'America/Argentina/Buenos_Aires'
-            as processed_ars_at
+                as avg_mep_dollar
 
     from fields_coalesced
 
