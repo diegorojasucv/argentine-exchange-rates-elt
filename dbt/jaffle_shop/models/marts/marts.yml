@@ -1,0 +1,133 @@
+version: 2
+
+models:
+  - name: metrics_exchange_rates
+    description: "Mart with all metrics related to exchange rates we need to send
+      alerts to Slack in the python action model."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - EXCHANGE_NAME
+            - PROCESSED_ARS_AT
+    columns:
+      - name: EXCHANGE_RATE_TOKEN
+        description: "Unique token of the entity."
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: EXCHANGE_NAME
+        description: "Names of the exchange rates."
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: INDICATOR_DESCRIPTION
+        description: "Description of the indicator."
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: SOURCE_REFERENCE
+        description: "Source of data (BCRA, Criptoya, Yahoo Finance)"
+        data_type: TEXT
+        tests:
+          - not_null
+      - name: BID_PRICE
+        description: "Sale price reported by the exchange, excluding fees."
+        data_type: FLOAT
+      - name: TOTAL_BID_PRICE
+        description: "Final sale price including transfer and trade fees"
+        data_type: FLOAT
+      - name: ASK_PRICE
+        description: "Purchase price reported by the exchange, excluding fees"
+        data_type: FLOAT
+      - name: TOTAL_ASK_PRICE
+        description: "Final purchase price including transfer and trade fees."
+        data_type: FLOAT
+      - name: AVG_TOTAL_BID_PRICE
+        description: "Average of the final sale price including transfer and trade fees."
+        data_type: FLOAT
+      - name: AVG_TOTAL_ASK_PRICE
+        description: "Average of the final purchase price including transfer and trade
+          fees."
+        data_type: FLOAT
+      - name: OFFICIAL_RETAILER_DOLLAR
+        description: "Official retailer exchange rate."
+        data_type: FLOAT
+      - name: OFFICIAL_WHOLESALE_DOLLAR
+        description: "Official wholesale exchange rate."
+        data_type: FLOAT
+      - name: AVG_MEP_DOLLAR
+        description: "Average of the MEP exchange rate."
+        data_type: FLOAT
+      - name: UPDATED_ARS_AT
+        description: "Timestamp when the data was last updated."
+        data_type: TIMESTAMP_NTZ
+        tests:
+          - not_null
+      - name: PROCESSED_ARS_AT
+        description: "Timestamp when the data was processed."
+        data_type: TIMESTAMP_TZ
+        tests:
+          - not_null
+      - name: GAP_OVER_OFFICIAL_RETAILER_EXCHANGE_RATE
+        description: "Gap over the official retailer exchange rate."
+        data_type: FLOAT
+      - name: GAP_OVER_OFFICIAL_WHOLESALE_EXCHANGE_RATE
+        description: "Gap over the official wholesale exchange rate."
+        data_type: FLOAT
+      - name: GAP_OVER_MEP_EXCHANGE_RATE
+        description: "Gap over the MEP exchange rate."
+        data_type: FLOAT
+      - name: IS_HIGH_MEP_GAP
+        description: "Indicator if the MEP gap is high."
+        data_type: BOOLEAN
+      - name: TOTAL_BID_PRICE_LAGGED
+        description: "Lagged total bid price."
+        data_type: FLOAT
+      - name: GAP_OVER_MEP_EXCHANGE_RATE_LAGGED
+        description: "Lagged gap over the MEP exchange rate."
+        data_type: FLOAT
+      - name: IS_TOP_CRIPTO_EXCHANGES
+        description: "Indicator if it is one of the top crypto exchanges."
+        data_type: BOOLEAN
+      - name: MAX_TOTAL_BID_PRICE
+        description: "Maximum total bid price for the top cripto exchanges"
+        data_type: FLOAT
+      - name: MIN_TOTAL_ASK_PRICE
+        description: "Minimum  total bid price for the top cripto exchanges"
+        data_type: FLOAT
+      - name: ARBITRAGE_RATIO
+        description: "Percentage difference between bid and ask price."
+        data_type: FLOAT
+      - name: IS_ARBITRAGE_OPPORTUNITY
+        description: "Indicator if there is an arbitrage opportunity (ratio greater than
+          threshold)."
+        data_type: BOOLEAN
+      - name: IS_HIGH_OFFICIAL_GAP
+        description: "Indicator if the official gap is high."
+        data_type: BOOLEAN
+      - name: GAP_OVER_OFFICIAL_WHOLESALE_EXCHANGE_RATE_LAGGED
+        description: "Lagged gap over the official wholesale exchange rate."
+        data_type: FLOAT
+      - name: CHANGE_TOTAL_BID_PRICE
+        description: "Percentage change in the total bid price with respect to the last
+          available value."
+        data_type: FLOAT
+      - name: IS_HIGH_CHANGE_TOTAL_BID_PRICE
+        description: "Indicator if the change in total bid price is high."
+        data_type: BOOLEAN
+      - name: CHANGE_GAP_OVER_OFFICIAL_WHOLESALE_EXCHANGE_RATE
+        description: "Percentage change in the gap over the official wholesale exchange
+          rate with respect to the last available value."
+        data_type: FLOAT
+      - name: IS_HIGH_CHANGE_GAP_OVER_OFFICIAL_WHOLESALE_EXCHANGE_RATE
+        description: "Indicator if the change in the gap over the official wholesale
+          exchange rate is high."
+        data_type: BOOLEAN
+      - name: CHANGE_GAP_OVER_MEP_EXCHANGE_RATE
+        description: "Percentage change in the gap over the MEP exchange rate respect to
+          the last available value."
+        data_type: FLOAT
+      - name: IS_HIGH_CHANGE_GAP_OVER_MEP_EXCHANGE_RATE
+        description: "Indicator if the change in the gap over the MEP exchange rate is
+          high."
+        data_type: BOOLEAN
