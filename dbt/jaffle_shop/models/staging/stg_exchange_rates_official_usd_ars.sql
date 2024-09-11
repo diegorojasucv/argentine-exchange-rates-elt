@@ -15,8 +15,8 @@ filter_exchange_rates as (
 
         indicator_description,
         'BCRA' as source_reference,
-        coalesce(valor, 0) as total_bid_price,
-        avg(coalesce(valor, 0)) over () as avg_total_bid_price,
+        coalesce(total_bid_price, 0) as total_bid_price,
+        avg(coalesce(total_bid_price, 0)) over () as avg_total_bid_price,
         updated_at at time zone 'America/Argentina/Buenos_Aires'
             as updated_ars_at,
         extracted_at at time zone 'America/Argentina/Buenos_Aires'

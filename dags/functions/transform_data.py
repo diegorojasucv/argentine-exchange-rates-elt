@@ -1,6 +1,4 @@
 import pandas as pd
-import logging
-import json
 import ast
 from datetime import datetime
 
@@ -10,6 +8,26 @@ COLUMNS_TO_RENAME_USDT = {
     "totalAsk": "total_ask_price",
     "bid": "bid_price",
     "totalBid": "total_bid_price",
+}
+
+COLUMNS_TO_RENAME_MEP = {
+    "index": "mep_name",
+    "price": "total_bid_price",
+}
+
+COLUMNS_TO_RENAME_OTHER = {
+    "index": "exchange_name",
+    "ask": "ask_price",
+    "totalAsk": "total_ask_price",
+    "bid": "bid_price",
+    "totalBid": "total_bid_price",
+}
+
+COLUMNS_TO_RENAME_BCRA = {
+    "idVariable": "indicator_id",
+    "cdSerie": "cd_serie",
+    "descripcion": "indicator_description",
+    "valor": "total_bid_price",
 }
 
 
@@ -50,6 +68,7 @@ def transform_mep_usd_from_criptoya_api(data, **kwargs):
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df = df[["index", "price", "updated_at", "extracted_at"]]
+    df.rename(columns=COLUMNS_TO_RENAME_MEP, inplace=True)
     df_json = df.to_json()
     return df_json
 
@@ -64,7 +83,8 @@ def transform_other_usd_from_criptoya_api(data, **kwargs):
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     df = df.fillna(0)
-    df = df[["index", "price", "ask", "bid", "updated_at", "extracted_at"]]
+    df = df[["index", "ask", "bid", "updated_at", "extracted_at"]]
+    df.rename(columns=COLUMNS_TO_RENAME_OTHER, inplace=True)
     df_json = df.to_json()
     return df_json
 
@@ -78,5 +98,6 @@ def transform_bcra_from_api(data, **kwargs):
     df = df[
         ["idVariable", "cdSerie", "descripcion", "valor", "updated_at", "extracted_at"]
     ]
+    df.rename(columns=COLUMNS_TO_RENAME_BCRA, inplace=True)
     df_json = df.to_json()
     return df_json
