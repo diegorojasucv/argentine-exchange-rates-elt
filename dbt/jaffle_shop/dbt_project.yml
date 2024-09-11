@@ -19,6 +19,10 @@ clean-targets:
 
 require-dbt-version: [">=1.0.0", "<2.0.0"]
 
+data_tests:
+  my_new_project:
+    +store_failures: false
+
 models:
   jaffle_shop:
       materialized: table
