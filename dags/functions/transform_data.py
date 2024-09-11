@@ -4,6 +4,14 @@ import json
 import ast
 from datetime import datetime
 
+COLUMNS_TO_RENAME_USDT = {
+    "index": "exchange_name",
+    "ask": "ask_price",
+    "totalAsk": "total_ask_price",
+    "bid": "bid_price",
+    "totalBid": "total_bid_price",
+}
+
 
 def transform_usdt_from_criptoya_api(data, **kwargs):
 
@@ -15,6 +23,7 @@ def transform_usdt_from_criptoya_api(data, **kwargs):
     df = df[
         ["index", "ask", "totalAsk", "bid", "totalBid", "updated_at", "extracted_at"]
     ]
+    df.rename(columns=COLUMNS_TO_RENAME_USDT, inplace=True)
     df_json = df.to_json()
     return df_json
 

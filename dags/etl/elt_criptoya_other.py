@@ -6,15 +6,6 @@ from functions.extract_data import *
 from functions.transform_data import *
 from functions.load_data import *
 
-db_config = {
-    "host": Variable.get("postgres_host"),
-    "port": 5432,
-    "dbname": Variable.get("postgres_dbname"),
-    "user": Variable.get("postgres_user"),
-    "password": Variable.get("postgres_password"),
-    "schema": "raw",
-}
-
 
 @dag(
     dag_id="elt_criptoya_other",
@@ -41,10 +32,10 @@ def elt_criptoya_other() -> None:
 
     load_task = PythonOperator(
         task_id="load_other_prices_to_postgres",
-        python_callable=load_other_prices_to_postgres,
+        python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_other_usd_from_criptoya_api') }}",
-            "db_config": db_config,
+            "table_name": "raw_other_ars_prices",
         },
     )
 

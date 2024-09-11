@@ -1,7 +1,7 @@
 from airflow.decorators import dag
 from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
 
-from include.profiles import airflow_db
+from include.profiles import airflow_db, redshift_db
 from include.constants import jaffle_shop_path, venv_execution_config
 
 
@@ -18,7 +18,7 @@ def dbt_trigger() -> None:
     dbt_task = DbtTaskGroup(
         group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
-        profile_config=airflow_db,
+        profile_config=redshift_db,
         operator_args={"install_deps": True},
         execution_config=venv_execution_config,
         render_config=RenderConfig(emit_datasets=False),
