@@ -53,7 +53,7 @@ fields_coalesced as (
         avg_total_ask_price,
         updated_ars_at,
         extracted_ars_at,
-        current_timestamp at time zone 'America/Argentina/Buenos_Aires'
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', current_timestamp)
             as processed_ars_at
 
     from exchange_rates_unioned

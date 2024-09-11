@@ -1,7 +1,7 @@
 from airflow.decorators import dag
 from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
 
-from include.profiles import airflow_db, redshift_db
+from include.profiles import redshift_db
 from include.constants import jaffle_shop_path, venv_execution_config
 
 

@@ -4,7 +4,7 @@ models:
   - name: metrics_exchange_rates
     description: "Mart with all metrics related to exchange rates we need to send
       alerts to Slack in the python action model."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - EXCHANGE_NAME
@@ -13,22 +13,22 @@ models:
       - name: EXCHANGE_RATE_TOKEN
         description: "Unique token of the entity."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: EXCHANGE_NAME
         description: "Names of the exchange rates."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: INDICATOR_DESCRIPTION
         description: "Description of the indicator."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: SOURCE_REFERENCE
         description: "Source of data (BCRA, Criptoya, Yahoo Finance)"
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: BID_PRICE
         description: "Sale price reported by the exchange, excluding fees."
@@ -61,12 +61,12 @@ models:
       - name: UPDATED_ARS_AT
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_NTZ
-        tests:
+        data_tests:
           - not_null
       - name: PROCESSED_ARS_AT
         description: "Timestamp when the data was processed."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
       - name: GAP_OVER_OFFICIAL_RETAILER_EXCHANGE_RATE
         description: "Gap over the official retailer exchange rate."

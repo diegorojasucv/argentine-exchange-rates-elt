@@ -4,7 +4,7 @@ models:
   - name: stg_exchange_rates_cripto_usdt_ars
     description: >
       Stage with the necessary transformations to have the USDT/ARS exchange rates.
-    tests:
+    data_tests:
       - dbt_utils.recency:
           datepart: minute
           field: extracted_ars_at
@@ -17,43 +17,43 @@ models:
       - name: exchange_name
         description: "Names of the exchange rates."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: bid_price
         description: "Sale price reported by the exchange, excluding fees."
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: total_bid_price
         description: "Final sale price including transfer and trade fees"
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: ask_price
         description: "Purchase price reported by the exchange, excluding fees"
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: total_ask_price
         description: "Final purchase price including transfer and trade fees."
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: updated_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
       - name: extracted_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_exchange_rates_mep_usd_ars
     description: >
       Stage with the necessary transformations to have the MEP exchange rates.
-    tests:
+    data_tests:
       - dbt_utils.recency:
           datepart: minute
           field: extracted_ars_at
@@ -66,37 +66,37 @@ models:
       - name: exchange_name
         description: "Names of type of MEP."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: indicator_description
         description: "Description of the indicator."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: source_reference
         description: "Source of data (e.g BCRA, Criptoya)"
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: total_bid_price
         description: "Final sale price including transfer and trade fees"
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: updated_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
       - name: extracted_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
   - name: stg_exchange_rates_other_usd_ars
     description: >
       Stage with the necessary transformations to have the other exchange rates.
-    tests:
+    data_tests:
       - dbt_utils.recency:
           datepart: minute
           field: extracted_ars_at
@@ -109,42 +109,42 @@ models:
       - name: exchange_name
         description: "Names of the exchange rates."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: indicator_description
         description: "Description of the indicator."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: source_reference
         description: "Source of data (e.g BCRA, Criptoya)"
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: total_bid_price
         description: "Final sale price including transfer and trade fees"
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: total_ask_price
         description: "Final purchase price including transfer and trade fees."
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: updated_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
       - name: extracted_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
   - name: stg_exchange_rates_official_usd_ars
     description: >
       Stage with the necessary transformations to have the official exchange rates.
-    tests:
+    data_tests:
       - dbt_utils.recency:
           datepart: minute
           field: extracted_ars_at
@@ -157,30 +157,30 @@ models:
       - name: exchange_name
         description: "Names of the exchange rates."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: indicator_description
         description: "Description of the indicator."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: source_reference
         description: "Source of data (e.g BCRA, Criptoya)"
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: total_bid_price
         description: "Final sale price including transfer and trade fees"
         data_type: FLOAT
-        tests:
+        data_tests:
           - not_null
       - name: updated_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null
       - name: extracted_ars_at
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_TZ
-        tests:
+        data_tests:
           - not_null

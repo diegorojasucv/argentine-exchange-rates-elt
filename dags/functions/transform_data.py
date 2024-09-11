@@ -17,10 +17,8 @@ COLUMNS_TO_RENAME_MEP = {
 
 COLUMNS_TO_RENAME_OTHER = {
     "index": "exchange_name",
-    "ask": "ask_price",
-    "totalAsk": "total_ask_price",
-    "bid": "bid_price",
-    "totalBid": "total_bid_price",
+    "ask": "total_ask_price",
+    "bid": "total_bid_price",
 }
 
 COLUMNS_TO_RENAME_BCRA = {
@@ -80,9 +78,10 @@ def transform_other_usd_from_criptoya_api(data, **kwargs):
     df = df[["ahorro", "tarjeta", "blue"]]
     df = df[df.index.isin(["price", "timestamp", "ask", "bid"])]
     df = df.T.reset_index()
+    df["ask"] = df["ask"].fillna(df["price"]).fillna(0)
+    df["bid"] = df["bid"].fillna(df["price"]).fillna(0)
     df["updated_at"] = pd.to_datetime(df["timestamp"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    df = df.fillna(0)
     df = df[["index", "ask", "bid", "updated_at", "extracted_at"]]
     df.rename(columns=COLUMNS_TO_RENAME_OTHER, inplace=True)
     df_json = df.to_json()
