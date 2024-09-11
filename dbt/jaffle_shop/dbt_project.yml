@@ -20,8 +20,9 @@ clean-targets:
 require-dbt-version: [">=1.0.0", "<2.0.0"]
 
 data_tests:
-  my_new_project:
-    +store_failures: false
+  jaffle_shop:
+    +schema: 2024_diego_rojas
+    +store_failures: true
 
 models:
   jaffle_shop:
