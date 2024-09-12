@@ -18,14 +18,15 @@ def elt_bcra_indicators() -> None:
     """
 
     extract_task = PythonOperator(
-        task_id="extract_bcra_from_api",
-        python_callable=extract_bcra_from_api,
+        task_id="extract_data_from_api",
+        python_callable=extract_data_from_api,
+        op_kwargs={"api_name": "bcra"},
     )
 
     transform_task = PythonOperator(
         task_id="transform_bcra_from_api",
         python_callable=transform_bcra_from_api,
-        op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_bcra_from_api') }}"},
+        op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"},
     )
 
     load_task = PythonOperator(
