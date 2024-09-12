@@ -1,36 +1,38 @@
 import requests
-import json
 
 
-def extract_usdt_from_criptoya_api(**kwargs):
-    api_url = "https://criptoya.com/api/usdt/ars/100"
-    try:
-        response = requests.get(api_url)
-        response.raise_for_status()
-        data = response.json()
-        return data
-    except requests.exceptions.RequestException as e:
-        return None
+def extract_data_from_api(api_name, **kwargs):
+    """
+    Extracts data from different APIs based on the provided API name.
 
+    Args:
+        api_name (str): The name of the API to extract data from.
+            Valid options are 'usdt', 'usd', or 'bcra'.
+        **kwargs: Additional arguments that can be passed if necessary.
 
-def extract_usd_from_criptoya_api(**kwargs):
-    api_url = "https://criptoya.com/api/dolar"
-    try:
-        response = requests.get(api_url)
-        response.raise_for_status()
-        data = response.json()
-        return data
-    except requests.exceptions.RequestException as e:
-        return None
+    Returns:
+        dict or None: The response data from the API in JSON format if the request
+        was successful, otherwise None.
+    """
+    api_urls = {
+        "usdt": "https://criptoya.com/api/usdt/ars/100",
+        "usd": "https://criptoya.com/api/dolar",
+        "bcra": "https://api.bcra.gob.ar/estadisticas/v2.0/principalesvariables",
+    }
 
+    api_url = api_urls.get(api_name)
 
-def extract_bcra_from_api(**kwargs):
-    api_url = "https://api.bcra.gob.ar/estadisticas/v2.0/principalesvariables"
-    headers = {"Accept-Language": "en-US"}
+    if not api_url:
+        raise ValueError(
+            f"Invalid API name: {api_name}. Valid options are 'usdt', 'usd', or 'bcra'."
+        )
+
+    headers = {"Accept-Language": "en-US"} if api_name == "bcra" else {}
+
     try:
         response = requests.get(api_url, headers=headers, verify=False)
         response.raise_for_status()
         data = response.json()
         return data
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         return None
