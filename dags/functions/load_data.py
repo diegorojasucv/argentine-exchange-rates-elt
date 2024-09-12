@@ -17,7 +17,6 @@ def connect_to_redshift_engine():
     port = 5439
     dbname = "pda"
 
-    # Create the connection string for SQLAlchemy
     connection_string = (
         f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}"
     )
@@ -32,14 +31,12 @@ def load_data_to_redshift(df_json, table_name):
         df_json (str): Data in JSON format to be inserted.
         table_name (str): Name of the table to insert the data into.
     """
-    # Convert JSON string to DataFrame
+
     df_dict = ast.literal_eval(df_json)
     df = pd.DataFrame.from_dict(df_dict)
 
-    # Get the SQLAlchemy connection engine
     engine = connect_to_redshift_engine()
 
-    # Save the DataFrame into the specified table in Redshift
     df.to_sql(
         table_name,
         engine,
