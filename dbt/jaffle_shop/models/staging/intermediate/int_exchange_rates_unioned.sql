@@ -74,8 +74,12 @@ transformations as (
 
             coalesce(
                 last_value(
-                    case when exchange_name = '{{ types_bcra_exchange_rate }}' then total_bid_price end
-                ) over (partition by exchange_name order by updated_ars_at rows between unbounded preceding and current row),
+                    case
+                        when exchange_name = '{{ types_bcra_exchange_rate }}'
+                            then total_bid_price end
+                ) over (partition by exchange_name
+                        order by updated_ars_at rows between unbounded preceding and current row
+                        ),
                 0
             ) as {{ dbt_utils.slugify(types_bcra_exchange_rate) }},
 
@@ -83,8 +87,12 @@ transformations as (
 
         coalesce(
             last_value(
-                case when exchange_name like 'mep%' then avg_total_bid_price end
-            ) over (partition by exchange_name order by updated_ars_at rows between unbounded preceding and current row),
+                case
+                    when exchange_name like 'mep%'
+                        then avg_total_bid_price end
+            ) over (partition by exchange_name
+                    order by updated_ars_at rows between unbounded preceding and current row
+                    ),
             0
         ) as avg_mep_dollar
 
