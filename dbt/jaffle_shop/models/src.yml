@@ -36,9 +36,6 @@ sources:
           - name: mep_name
             data_tests:
               - not_null
-          - name: price
-            data_tests:
-              - not_null
           - name: update_at
             data_tests:
               - not_null

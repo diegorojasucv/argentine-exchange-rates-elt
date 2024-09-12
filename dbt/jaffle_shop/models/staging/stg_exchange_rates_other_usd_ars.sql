@@ -45,7 +45,7 @@ stage as (
             else exchange_name
         end as indicator_description,
 
-        'Criptoya - USD' as source_reference,
+        cast('Criptoya - USD' as varchar) as source_reference,
         total_bid_price,
         total_ask_price,
         avg(total_bid_price) over () as avg_total_bid_price,

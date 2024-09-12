@@ -2,11 +2,11 @@ airflow_db:
   target: dev
   outputs:
     dev:
-      type: postgres
-      host: postgres
-      user: postgres
-      password: postgres
-      port: 5432
-      dbname: postgres
-      schema: dbt
+      type: redshift
+      host: redshift-pda-cluster.cnuimntownzt.us-east-2.redshift.amazonaws.com
+      user: 2024_diego_rojas
+      password: J3^L6&!9$xQ
+      port: 5439
+      dbname: pda
+      schema: 2024_diego_rojas_schema
       threads: 4

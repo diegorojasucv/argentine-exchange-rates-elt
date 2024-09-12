@@ -23,11 +23,11 @@ stage as (
 
         exchange_name,
 
-        'The MEP dollar arises from the buying and
+        cast('The MEP dollar arises from the buying and
 			selling of bonds and stocks that are traded in the local and
-			foreign markets.' as indicator_description,
+			foreign markets.' as varchar) as indicator_description,
 
-        'Criptoya - MEP' as source_reference,
+        cast('Criptoya - MEP' as varchar) as source_reference,
         total_bid_price,
         avg(total_bid_price) over () as avg_total_bid_price,
 

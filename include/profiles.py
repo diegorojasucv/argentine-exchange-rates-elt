@@ -2,19 +2,19 @@
 
 from cosmos import ProfileConfig
 from cosmos.profiles import (
-    PostgresUserPasswordProfileMapping,
+    # PostgresUserPasswordProfileMapping,
     RedshiftUserPasswordProfileMapping,
 )
 
 
-airflow_db = ProfileConfig(
-    profile_name="airflow_db",
-    target_name="dev",
-    profile_mapping=PostgresUserPasswordProfileMapping(
-        conn_id="airflow_metadata_db",
-        profile_args={"schema": "dbt"},
-    ),
-)
+# airflow_db = ProfileConfig(
+#     profile_name="airflow_db",
+#     target_name="dev",
+#     profile_mapping=PostgresUserPasswordProfileMapping(
+#         conn_id="airflow_metadata_db",
+#         profile_args={"schema": "dbt"},
+#     ),
+# )
 
 redshift_db = ProfileConfig(
     profile_name="redshift_db",

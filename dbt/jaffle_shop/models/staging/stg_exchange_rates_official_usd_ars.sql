@@ -29,7 +29,7 @@ stage as (
         end as exchange_name,
 
         indicator_description,
-        'BCRA' as source_reference,
+        cast('BCRA' as varchar) as source_reference,
         coalesce(total_bid_price, 0) as total_bid_price,
         avg(coalesce(total_bid_price, 0)) over () as avg_total_bid_price,
 

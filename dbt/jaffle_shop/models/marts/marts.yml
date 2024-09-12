@@ -4,17 +4,13 @@ models:
   - name: metrics_exchange_rates
     description: "Mart with all metrics related to exchange rates we need to send
       alerts to Slack in the python action model."
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - EXCHANGE_NAME
-            - PROCESSED_ARS_AT
     columns:
       - name: EXCHANGE_RATE_TOKEN
         description: "Unique token of the entity."
         data_type: TEXT
         data_tests:
           - not_null
+          - unique
       - name: EXCHANGE_NAME
         description: "Names of the exchange rates."
         data_type: TEXT
