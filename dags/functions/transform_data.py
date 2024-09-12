@@ -30,7 +30,16 @@ COLUMNS_TO_RENAME_BCRA = {
 
 
 def transform_usdt_from_criptoya_api(data, **kwargs):
+    """
+    Transforms USDT data from CriptoYa API to a JSON format.
 
+    Args:
+        data (str): A string containing the raw data from CriptoYa API.
+        **kwargs: Additional keyword arguments.
+
+    Returns:
+        str: JSON string of the transformed data.
+    """
     data_dict = ast.literal_eval(data)
     df = pd.DataFrame.from_dict(data_dict)
     df = df.T.reset_index()
@@ -45,12 +54,20 @@ def transform_usdt_from_criptoya_api(data, **kwargs):
 
 
 def transform_mep_usd_from_criptoya_api(data, **kwargs):
+    """
+    Transforms MEP USD data from CriptoYa API to a JSON format.
 
+    Args:
+        data (str): A string containing the raw data from CriptoYa API.
+        **kwargs: Additional keyword arguments.
+
+    Returns:
+        str: JSON string of the transformed MEP data.
+    """
     data_dict = ast.literal_eval(data)
 
     mep_al30_ci = data_dict["mep"]["al30"]["ci"]
     mep_gd30_ci = data_dict["mep"]["gd30"]["ci"]
-
     mep_al30_48hs = data_dict["mep"]["al30"]["24hs"]
     mep_gd30_48hs = data_dict["mep"]["gd30"]["24hs"]
 
@@ -72,7 +89,16 @@ def transform_mep_usd_from_criptoya_api(data, **kwargs):
 
 
 def transform_other_usd_from_criptoya_api(data, **kwargs):
+    """
+    Transforms other USD data (ahorro, tarjeta, blue) from CriptoYa API to a JSON format.
 
+    Args:
+        data (str): A string containing the raw data from CriptoYa API.
+        **kwargs: Additional keyword arguments.
+
+    Returns:
+        str: JSON string of the transformed data.
+    """
     data_dict = ast.literal_eval(data)
     df = pd.DataFrame.from_dict(data_dict)
     df = df[["ahorro", "tarjeta", "blue"]]
@@ -89,7 +115,16 @@ def transform_other_usd_from_criptoya_api(data, **kwargs):
 
 
 def transform_bcra_from_api(data, **kwargs):
+    """
+    Transforms BCRA data to a JSON format.
 
+    Args:
+        data (str): A string containing the raw data from the BCRA API.
+        **kwargs: Additional keyword arguments.
+
+    Returns:
+        str: JSON string of the transformed BCRA data.
+    """
     data_dict = ast.literal_eval(data)
     df = pd.DataFrame.from_dict(data_dict["results"])
     df["updated_at"] = pd.to_datetime(df["fecha"]).astype(str)
