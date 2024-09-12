@@ -1,7 +1,19 @@
 with source as (
 
-    select *
-    from {{ source('postgres_source', 'mep_ars_prices') }}
+    select * from {{ source('redshift_source', 'raw_mep_ars_prices') }}
+
+),
+
+base as (
+
+    select
+
+        mep_name as exchange_name,
+        coalesce(total_bid_price, 0) as total_bid_price,
+        cast(updated_at as timestamp) as updated_at,
+        cast(extracted_at as timestamp) as extracted_at
+
+    from source
 
 ),
 
@@ -9,22 +21,22 @@ stage as (
 
     select
 
-        mep_name as exchange_name,
+        exchange_name,
 
-        'The MEP dollar arises from the buying and
+        cast('The MEP dollar arises from the buying and
 			selling of bonds and stocks that are traded in the local and
-			foreign markets.' as indicator_description,
+			foreign markets.' as varchar) as indicator_description,
 
-        'Criptoya - MEP' as source_reference,
-        coalesce(price, 0) as total_bid_price,
-        avg(coalesce(price, 0)) over () as avg_total_bid_price,
+        cast('Criptoya - MEP' as varchar) as source_reference,
+        total_bid_price,
+        avg(total_bid_price) over () as avg_total_bid_price,
 
-        updated_at at time zone 'America/Argentina/Buenos_Aires'
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at)
             as updated_ars_at,
-        extracted_at at time zone 'America/Argentina/Buenos_Aires'
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', extracted_at)
             as extracted_ars_at
 
-    from source
+    from base
 
 )
 

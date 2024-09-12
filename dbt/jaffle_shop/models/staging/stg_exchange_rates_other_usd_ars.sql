@@ -9,8 +9,22 @@
 
 with source as (
 
-	select *
-	from {{ source('postgres_source', 'other_ars_prices') }}
+	select * from {{ source('redshift_source', 'raw_other_ars_prices') }}
+
+),
+
+base as (
+
+    select
+
+        exchange_name,
+        coalesce(total_ask_price, 0) as total_ask_price,
+        coalesce(total_bid_price, 0) as total_bid_price,
+        cast(updated_at as timestamp) as updated_at,
+        cast(extracted_at as timestamp) as extracted_at
+
+    from source
+
 ),
 
 stage as (
@@ -19,30 +33,30 @@ stage as (
 
         case
             {% for spanish_name, english_name in dollars_descriptions.items() %}
-                when other_name = '{{ spanish_name }}' then '{{ english_name[0] }}'
+                when exchange_name = '{{ spanish_name }}' then '{{ english_name[0] }}'
             {% endfor %}
-            else other_name
+            else exchange_name
         end as exchange_name,
 
         case
-            {% for other_name, exchange_rate_description in dollars_descriptions.items() %}
-                when other_name = '{{ other_name }}' then '{{ exchange_rate_description[1] }}'
+            {% for exchange_name, exchange_rate_description in dollars_descriptions.items() %}
+                when exchange_name = '{{ exchange_name }}' then '{{ exchange_rate_description[1] }}'
             {% endfor %}
-            else other_name
+            else exchange_name
         end as indicator_description,
 
-        'Criptoya - USD' as source_reference,
-        coalesce(bid_price, price, 0) as total_bid_price,
-        coalesce(ask_price, price, 0) as total_ask_price,
-        avg(coalesce(bid_price, price, 0)) over () as avg_total_bid_price,
-        avg(coalesce(ask_price, price, 0)) over () as avg_total_ask_price,
+        cast('Criptoya - USD' as varchar) as source_reference,
+        total_bid_price,
+        total_ask_price,
+        avg(total_bid_price) over () as avg_total_bid_price,
+        avg(total_ask_price) over () as avg_total_ask_price,
 
-        updated_at at time zone 'America/Argentina/Buenos_Aires'
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at)
             as updated_ars_at,
-        extracted_at at time zone 'America/Argentina/Buenos_Aires'
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', extracted_at)
             as extracted_ars_at
 
-    from source
+    from base
 
 )
 

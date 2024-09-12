@@ -6,15 +6,6 @@ from functions.extract_data import *
 from functions.transform_data import *
 from functions.load_data import *
 
-db_config = {
-    "host": Variable.get("postgres_host"),
-    "port": 5432,
-    "dbname": Variable.get("postgres_dbname"),
-    "user": Variable.get("postgres_user"),
-    "password": Variable.get("postgres_password"),
-    "schema": "raw",
-}
-
 
 @dag(
     dag_id="elt_bcra_indicators",
@@ -39,10 +30,10 @@ def elt_bcra_indicators() -> None:
 
     load_task = PythonOperator(
         task_id="load_bcra_prices_to_postgres",
-        python_callable=load_bcra_prices_to_postgres,
+        python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_bcra_from_api') }}",
-            "db_config": db_config,
+            "table_name": "raw_bcra_indicators",
         },
     )
 

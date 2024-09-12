@@ -1,10 +1,25 @@
 with source as (
 
-    select * from {{ source('postgres_source', 'bcra_indicators') }}
+    select * from {{ source('redshift_source', 'raw_bcra_indicators') }}
 
 ),
 
-filter_exchange_rates as (
+base as (
+
+    select
+
+        indicator_id,
+        cd_serie,
+        indicator_description,
+        coalesce(total_bid_price, 0) as total_bid_price,
+        cast(updated_at as timestamp) as updated_at,
+        cast(extracted_at as timestamp) as extracted_at
+
+    from source
+
+),
+
+stage as (
 
     select
 
@@ -14,17 +29,18 @@ filter_exchange_rates as (
         end as exchange_name,
 
         indicator_description,
-        'BCRA' as source_reference,
-        coalesce(valor, 0) as total_bid_price,
-        avg(coalesce(valor, 0)) over () as avg_total_bid_price,
-        updated_at at time zone 'America/Argentina/Buenos_Aires'
+        cast('BCRA' as varchar) as source_reference,
+        coalesce(total_bid_price, 0) as total_bid_price,
+        avg(coalesce(total_bid_price, 0)) over () as avg_total_bid_price,
+
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at)
             as updated_ars_at,
-        extracted_at at time zone 'America/Argentina/Buenos_Aires'
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', extracted_at)
             as extracted_ars_at
 
-    from source
+    from base
     where indicator_id in (4, 5)
 
 )
 
-select * from filter_exchange_rates
+select * from stage

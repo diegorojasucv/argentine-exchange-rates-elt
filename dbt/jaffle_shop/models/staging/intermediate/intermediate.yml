@@ -4,26 +4,27 @@ models:
   - name: int_exchange_rates_unioned
     description: Model with the union of all stage models where we have all the
       exchange rates.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - EXCHANGE_NAME
-            - PROCESSED_ARS_AT
     columns:
+      - name: EXCHANGE_RATE_TOKEN
+        data_type: TEXT
+        description: Unique token of the entity.
+        data_tests:
+          - not_null
+          - unique
       - name: EXCHANGE_NAME
         description: "Names of the exchange rates."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: INDICATOR_DESCRIPTION
         description: "Description of the indicator."
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: SOURCE_REFERENCE
         description: "Source of data (BCRA, Criptoya, Yahoo Finance)"
         data_type: TEXT
-        tests:
+        data_tests:
           - not_null
       - name: BID_PRICE
         description: "Sale price reported by the exchange, excluding fees."
@@ -44,17 +45,12 @@ models:
       - name: UPDATED_ARS_AT
         description: "Timestamp when the data was last updated."
         data_type: TIMESTAMP_NTZ
-        tests:
+        data_tests:
           - not_null
       - name: PROCESSED_ARS_AT
         description: "Timestamp when the entity was processed."
         data_type: TIMESTAMP_TZ
-        tests:
-          - not_null
-      - name: EXCHANGE_RATE_TOKEN
-        data_type: TEXT
-        description: Unique token of the entity.
-        tests:
+        data_tests:
           - not_null
       - name: AVG_TOTAL_BID_PRICE
         data_type: FLOAT

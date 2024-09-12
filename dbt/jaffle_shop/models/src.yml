@@ -1,12 +1,12 @@
 version: 2
 
 sources:
-  - name: postgres_source
+  - name: redshift_source
     description: Raw data from APIs.
-    database: postgres
-    schema: raw
+    database: pda
+    schema: 2024_diego_rojas_schema
     tables:
-      - name: usdt_ars_prices
+      - name: raw_usdt_ars_prices
         description: USDT-ARS prices for exchange rates.
         columns:
           - name: exchange_rate
@@ -30,13 +30,10 @@ sources:
           - name: extracted_at
             data_tests:
               - not_null
-      - name: mep_ars_prices
+      - name: raw_mep_ars_prices
         description: Mep prices for each bond.
         columns:
           - name: mep_name
-            data_tests:
-              - not_null
-          - name: price
             data_tests:
               - not_null
           - name: update_at
@@ -45,7 +42,7 @@ sources:
           - name: extracted_at
             data_tests:
               - not_null
-      - name: other_ars_prices
+      - name: raw_other_ars_prices
         description: Other prices (e.g saving, tourist, black market dollar).
         columns:
           - name: other_name
@@ -66,7 +63,7 @@ sources:
           - name: extracted_at
             data_tests:
               - not_null
-      - name: bcra_indicators
+      - name: raw_bcra_indicators
         description: Main indicators from BCRA.
         columns:
           - name: id_variable

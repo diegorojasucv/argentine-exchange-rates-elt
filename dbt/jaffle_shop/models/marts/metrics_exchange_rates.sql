@@ -108,7 +108,7 @@ metrics_lagged as (
 
         {% for metrics in metrics_threshold %}
 
-            ,lag({{ metrics }}) over (
+            , lag({{ metrics }}) over (
                 partition by exchange_name
                 order by processed_ars_at
             ) as {{ metrics }}_lagged
@@ -130,10 +130,10 @@ change_metrics as (
 
         {% for metrics, threshold  in metrics_threshold.items() %}
 
-            ,{{ dbt_utils.safe_divide(
+            , {{ dbt_utils.safe_divide(
                 metrics,
                 metrics ~ '_lagged'
-            ) }} -1 as change_{{ metrics }}
+            ) }} - 1 as change_{{ metrics }}
 
         {% endfor %}
 
@@ -150,7 +150,7 @@ is_high_change_metrics as (
 
         {% for metrics, threshold  in metrics_threshold.items() %}
 
-            ,change_{{ metrics }} > {{ threshold }}
+            , change_{{ metrics }} > {{ threshold }}
                 as is_high_change_{{ metrics }}
 
         {% endfor %}

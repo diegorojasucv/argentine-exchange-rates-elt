@@ -15,7 +15,10 @@
         'total_ask_price',
         'avg_total_bid_price',
         'avg_total_ask_price',
-        'updated_ars_at'
+        'updated_ars_at',
+        'extracted_ars_at',
+        'processed_ars_at',
+
     ]
 %}
 
@@ -53,8 +56,7 @@ fields_coalesced as (
         avg_total_ask_price,
         updated_ars_at,
         extracted_ars_at,
-        current_timestamp at time zone 'America/Argentina/Buenos_Aires'
-            as processed_ars_at
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', getdate()) as processed_ars_at
 
     from exchange_rates_unioned
 
@@ -70,17 +72,29 @@ transformations as (
 
         {%- for types_bcra_exchange_rate in types_bcra_exchange_rates %}
 
-            last_value(
-                case when exchange_name = '{{ types_bcra_exchange_rate }}' then total_bid_price end
-            ) over (order by updated_ars_at)
-                as {{ dbt_utils.slugify(types_bcra_exchange_rate) }},
+            coalesce(
+                last_value(
+                    case
+                        when exchange_name = '{{ types_bcra_exchange_rate }}'
+                            then total_bid_price end
+                ) over (partition by exchange_name
+                        order by updated_ars_at rows between unbounded preceding and current row
+                        ),
+                0
+            ) as {{ dbt_utils.slugify(types_bcra_exchange_rate) }},
 
         {% endfor %}
 
+        coalesce(
             last_value(
-                case when exchange_name like 'mep%' then avg_total_bid_price end
-            ) over (order by updated_ars_at)
-                as avg_mep_dollar
+                case
+                    when exchange_name like 'mep%'
+                        then avg_total_bid_price end
+            ) over (partition by exchange_name
+                    order by updated_ars_at rows between unbounded preceding and current row
+                    ),
+            0
+        ) as avg_mep_dollar
 
     from fields_coalesced
 
