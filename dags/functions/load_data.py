@@ -31,7 +31,6 @@ def load_data_to_redshift(df_json, table_name):
         df_json (str): Data in JSON format to be inserted.
         table_name (str): Name of the table to insert the data into.
     """
-
     df_dict = ast.literal_eval(df_json)
     df = pd.DataFrame.from_dict(df_dict)
 
