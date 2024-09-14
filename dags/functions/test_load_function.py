@@ -28,15 +28,11 @@ def test_connect_to_redshift_engine(mock_create_engine):
     Test connect_to_redshift_engine function to ensure it creates an engine.
     """
     connection_string = "redshift+psycopg2://2024_diego_rojas:password@redshift-pda-cluster.cnuimntownzt.us-east-2.redshift.amazonaws.com:5439/pda"
-    # Call the function under test
     engine = connect_to_redshift_engine()
 
-    # Check that create_engine was called exactly once
     mock_create_engine.assert_called_once()
 
-    # Verify that the connection string is used correctly
     args, kwargs = mock_create_engine.call_args
-    print(args[0])
     assert args[0] == connection_string
 
 
