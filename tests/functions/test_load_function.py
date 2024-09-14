@@ -1,5 +1,5 @@
 import pytest
-import logging
+import pandas as pd
 from unittest.mock import patch, MagicMock
 from dags.functions.load_data import connect_to_redshift_engine, load_data_to_redshift
 
