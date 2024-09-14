@@ -2,7 +2,7 @@ import pytest
 import requests
 from requests.exceptions import RequestException
 from unittest.mock import patch
-from functions.extract_data import extract_data_from_api
+from dags.functions.extract_data import extract_data_from_api
 
 
 @pytest.fixture
