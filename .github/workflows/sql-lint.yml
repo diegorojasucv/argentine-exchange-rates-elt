@@ -2,6 +2,8 @@ name: SQL Lint
 
 on:
   pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -35,7 +37,7 @@ jobs:
 
     - name: Show SQLFluff version
       run: sqlfluff --version
-  
+
     - name: Comment on Pull Request with Lint Report
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v6
