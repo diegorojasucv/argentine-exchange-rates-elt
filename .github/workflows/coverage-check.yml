@@ -27,7 +27,7 @@ jobs:
 
     - name: Run tests and generate coverage report
       run: |
-        pytest --cov=./ dags/functions > coverage-report.txt
+        pytest --cov=./ tests/ > coverage-report.txt
 
     - name: Comment on Pull Request with Coverage Report
       if: github.event_name == 'pull_request'
