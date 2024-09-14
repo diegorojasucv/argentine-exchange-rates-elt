@@ -1,4 +1,5 @@
 import pytest
+import logging
 from unittest.mock import patch, MagicMock
 from functions.load_data import connect_to_redshift_engine, load_data_to_redshift
 
@@ -36,15 +37,19 @@ def test_connect_to_redshift_engine(mock_create_engine):
     assert args[0] == connection_string
 
 
-# def test_load_data_to_redshift(mock_create_engine, sample_json_data):
-#     """
-#     Test load_data_to_redshift function to ensure it loads the data correctly.
-#     """
-#     mock_engine = mock_create_engine.return_value
+def test_load_data_to_redshift(mock_create_engine, sample_json_data):
+    """
+    Test load_data_to_redshift function to ensure it loads the data correctly.
+    """
+    mock_engine = mock_create_engine.return_value
 
-#     # Patch the to_sql method on the mock engine
-#     with patch('functions.load_data.pd.DataFrame.to_sql') as mock_to_sql:
-#         load_data_to_redshift(sample_json_data, "mock_table")
+    with patch("functions.load_data.pd.DataFrame.to_sql") as mock_to_sql:
+        load_data_to_redshift(sample_json_data, "mock_table")
 
-#         # Check that to_sql was called with the correct arguments
-#         mock_to_sql.assert_called_once_with("mock_table", mock_engine, if_exists='append', index=False)
+        mock_to_sql.assert_called_once_with(
+            "mock_table",
+            mock_engine,
+            schema="2024_diego_rojas_schema",
+            if_exists="append",
+            index=False,
+        )
