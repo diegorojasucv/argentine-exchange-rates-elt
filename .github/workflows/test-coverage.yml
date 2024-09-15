@@ -1,0 +1,61 @@
+name: Test Coverage
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11' # o la versión que estés usando
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=my_project --cov-report=xml --cov-fail-under=80
+        continue-on-error: false
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+      - name: Comment coverage on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: Coverage Report
+          message: |
+            This PR has a test coverage of $(pytest --cov=my_project --cov-report=term | tail -n 1)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download coverage report
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage-report
+
+      - name: Check coverage threshold
+        run: |
+          coverage=$(grep -o 'line-rate="[^"]*"' coverage.xml | head -n 1 | grep -o '[0-9.]*')
+          if (( $(echo "$coverage < 80.0" | bc -l) )); then
+            echo "Coverage is below threshold. Current coverage: $coverage%"
+            exit 1
+          fi
