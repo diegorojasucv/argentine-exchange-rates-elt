@@ -1,0 +1,4 @@
+[run]
+omit =
+    dags/*
+    */__init__.py
