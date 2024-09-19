@@ -1,7 +1,7 @@
 from datetime import datetime
 from airflow.models.dag import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
-
+from typing import NoneType
 
 with DAG(
     dag_id="elt_argentina_exchange_rates",
@@ -29,32 +29,31 @@ with DAG(
         None: This DAG does not return any values.
     """
 
-    elt_criptoya_usd_trigger = TriggerDagRunOperator(
+    elt_criptoya_usd_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_criptoya_usdt",
         trigger_dag_id="elt_criptoya_usdt",
     )
 
-    elt_criptoya_mep_trigger = TriggerDagRunOperator(
+    elt_criptoya_mep_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_criptoya_mep",
         trigger_dag_id="elt_criptoya_mep",
     )
 
-    elt_criptoya_other_trigger = TriggerDagRunOperator(
+    elt_criptoya_other_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_criptoya_other",
         trigger_dag_id="elt_criptoya_other",
     )
 
-    elt_bcra_indicators_trigger = TriggerDagRunOperator(
+    elt_bcra_indicators_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_bcra_indicators",
         trigger_dag_id="elt_bcra_indicators",
     )
 
-    dbt_trigger = TriggerDagRunOperator(
+    dbt_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="dbt_trigger",
         trigger_dag_id="dbt_trigger",
     )
 
-    # Task dependencies, ensuring the correct sequence of triggers
     (
         elt_criptoya_usd_trigger
         >> elt_criptoya_mep_trigger

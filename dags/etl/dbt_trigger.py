@@ -1,8 +1,8 @@
 from airflow.decorators import dag
 from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
-
 from include.profiles import redshift_db
 from include.constants import jaffle_shop_path, venv_execution_config
+from typing import NoneType
 
 
 @dag(
@@ -10,7 +10,7 @@ from include.constants import jaffle_shop_path, venv_execution_config
     catchup=False,
     tags=["dbt_trigger"],
 )
-def dbt_trigger() -> None:
+def dbt_trigger() -> NoneType:
     """
     DAG that triggers a dbt task group for executing dbt commands.
 
@@ -28,7 +28,7 @@ def dbt_trigger() -> None:
     Returns:
         None: This DAG doesn't return any values, it just triggers the dbt tasks.
     """
-    dbt_task = DbtTaskGroup(
+    dbt_task: DbtTaskGroup = DbtTaskGroup(
         group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
         profile_config=redshift_db,
@@ -37,7 +37,6 @@ def dbt_trigger() -> None:
         render_config=RenderConfig(emit_datasets=False),
     )
 
-    # This triggers the dbt task group within the DAG
     dbt_task
 
 

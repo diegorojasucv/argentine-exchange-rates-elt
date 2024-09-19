@@ -3,6 +3,7 @@ from airflow.operators.python import PythonOperator
 from dags.functions.extract_data import extract_data_from_api
 from dags.functions.transform_data import transform_bcra_from_api
 from dags.functions.load_data import load_data_to_redshift
+from typing import NoneType
 
 
 @dag(
@@ -10,7 +11,7 @@ from dags.functions.load_data import load_data_to_redshift
     catchup=False,
     tags=["bcra"],
 )
-def elt_bcra_indicators() -> None:
+def elt_bcra_indicators() -> NoneType:
     """
     ETL pipeline for extracting, transforming, and loading BCRA indicators data.
 
@@ -26,19 +27,19 @@ def elt_bcra_indicators() -> None:
         None: This DAG doesn't return any values.
     """
 
-    extract_task = PythonOperator(
+    extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
         op_kwargs={"api_name": "bcra"},
     )
 
-    transform_task = PythonOperator(
+    transform_task: PythonOperator = PythonOperator(
         task_id="transform_bcra_from_api",
         python_callable=transform_bcra_from_api,
         op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"},
     )
 
-    load_task = PythonOperator(
+    load_task: PythonOperator = PythonOperator(
         task_id="load_bcra_prices_to_postgres",
         python_callable=load_data_to_redshift,
         op_kwargs={
@@ -47,7 +48,6 @@ def elt_bcra_indicators() -> None:
         },
     )
 
-    # Define task dependencies
     extract_task >> transform_task >> load_task
 
 
