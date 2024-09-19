@@ -1,5 +1,2 @@
 [tool.black]
 line-length = 80
-
-[tool.interrogate]
-ignore-init-method = true

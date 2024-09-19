@@ -1,3 +1,5 @@
+"""Load functions"""
+
 import ast
 from typing import Dict
 
@@ -17,7 +19,9 @@ def connect_to_redshift_engine():
     try:
         redshift_user = "2024_diego_rojas"
         redshift_password = Variable.get("redshift_password")
-        redshift_host = "redshift-pda-cluster.cnuimntownzt.us-east-2.redshift.amazonaws.com"
+        redshift_host = (
+            "redshift-pda-cluster.cnuimntownzt.us-east-2.redshift.amazonaws.com"
+        )
         redshift_port = 5439
         redshift_db = "pda"
 
@@ -28,7 +32,9 @@ def connect_to_redshift_engine():
         return engine
 
     except OperationalError as e:
-        raise RuntimeError(f"An error occurred while connecting to Redshift: {str(e)}")
+        raise RuntimeError(
+            f"An error occurred while connecting to Redshift: {str(e)}"
+        )
 
 
 def load_data_to_redshift(df_json: str, table_name: str) -> None:
@@ -53,6 +59,8 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
             index=False,
         )
     except Exception as e:
-        raise RuntimeError(f"An error occurred while loading data to Redshift: {str(e)}")
+        raise RuntimeError(
+            f"An error occurred while loading data to Redshift: {str(e)}"
+        )
     finally:
         connection.close()
