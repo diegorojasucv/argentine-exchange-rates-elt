@@ -12,9 +12,22 @@ from include.constants import jaffle_shop_path, venv_execution_config
 )
 def dbt_trigger() -> None:
     """
-    The simplest example of using Cosmos to render a dbt project as a TaskGroup.
-    """
+    DAG that triggers a dbt task group for executing dbt commands.
 
+    This function sets up and runs a dbt task group using the provided
+    configurations for the dbt project, profile, and virtual environment execution.
+    It is designed to be scheduled and managed by Airflow.
+
+    Task Details:
+    - dbt_project: Refers to the dbt project configuration, including the project path
+      and Redshift profile.
+    - Dependencies are automatically installed in a virtual environment specified
+      in the execution config.
+    - The datasets will not be emitted by default (controlled by RenderConfig).
+
+    Returns:
+        None: This DAG doesn't return any values, it just triggers the dbt tasks.
+    """
     dbt_task = DbtTaskGroup(
         group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
@@ -24,6 +37,7 @@ def dbt_trigger() -> None:
         render_config=RenderConfig(emit_datasets=False),
     )
 
+    # This triggers the dbt task group within the DAG
     dbt_task
 
 
