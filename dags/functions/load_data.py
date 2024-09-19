@@ -1,17 +1,17 @@
 import ast
 import pandas as pd
 from airflow.models import Variable
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
 from typing import Dict
 
 
-def connect_to_redshift_engine() -> Engine:
+def connect_to_redshift_engine():
     """
     Establish a connection to the Redshift database using SQLAlchemy.
 
     Returns:
-        Engine: SQLAlchemy engine for Redshift connection.
+        Connection: SQLAlchemy connection for Redshift.
     """
     try:
         redshift_user = "2024_diego_rojas"
@@ -24,6 +24,7 @@ def connect_to_redshift_engine() -> Engine:
 
         connection_string = f"redshift+psycopg2://{redshift_user}:{redshift_password}@{redshift_host}:{redshift_port}/{redshift_db}"
 
+        # Create an engine and immediately connect to Redshift
         engine = create_engine(connection_string)
         return engine
 
@@ -42,12 +43,12 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
     df_dict: Dict = ast.literal_eval(df_json)
     df: pd.DataFrame = pd.DataFrame.from_dict(df_dict)
 
-    engine: Engine = connect_to_redshift_engine()
+    connection = connect_to_redshift_engine()
 
     try:
         df.to_sql(
             table_name,
-            engine,
+            connection,
             schema="2024_diego_rojas_schema",
             if_exists="append",
             index=False,
@@ -56,3 +57,5 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
         raise RuntimeError(
             f"An error occurred while loading data to Redshift: {str(e)}"
         )
+    finally:
+        connection.close()
