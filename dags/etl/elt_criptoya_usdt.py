@@ -1,3 +1,5 @@
+"""ETL for usdt-ars pair"""
+
 from typing import NoneType
 
 from airflow.decorators import dag
