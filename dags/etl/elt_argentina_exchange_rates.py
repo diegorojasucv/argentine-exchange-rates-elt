@@ -1,7 +1,9 @@
+"""DAG for orchestrating the ELT process of exchange rates in Argentina"""
+
 from datetime import datetime
+
 from airflow.models.dag import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
-from typing import NoneType
 
 with DAG(
     dag_id="elt_argentina_exchange_rates",
@@ -11,8 +13,6 @@ with DAG(
     tags=["main_elt"],
 ) as dag:
     """
-    DAG for orchestrating the ELT process of exchange rates in Argentina.
-
     This DAG is scheduled to run daily and triggers multiple dependent DAGs
     responsible for fetching exchange rate data from various sources, including
     CriptoYa (USD, MEP, and other exchange rates) and BCRA indicators.

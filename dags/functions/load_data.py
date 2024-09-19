@@ -1,9 +1,12 @@
+"""Load functions"""
+
 import ast
+from typing import Dict
+
 import pandas as pd
 from airflow.models import Variable
 from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
-from typing import Dict
 
 
 def connect_to_redshift_engine():

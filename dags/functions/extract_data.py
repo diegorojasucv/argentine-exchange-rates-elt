@@ -1,5 +1,8 @@
-import requests
+"""Extract functions"""
+
 from typing import Any, Dict, Optional
+
+import requests
 
 
 def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
