@@ -1,10 +1,8 @@
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
-from airflow.models import Variable
-
-from functions.extract_data import *
-from functions.transform_data import *
-from functions.load_data import *
+from dags.functions.extract_data import extract_data_from_api
+from dags.functions.transform_data import transform_mep_usd_from_criptoya_api
+from dags.functions.load_data import load_data_to_redshift
 
 
 @dag(
@@ -14,7 +12,18 @@ from functions.load_data import *
 )
 def elt_criptoya_mep() -> None:
     """
-    ETL for the mep-ars prices.
+    ETL pipeline for extracting, transforming, and loading MEP USD prices from CriptoYa API.
+
+    This DAG handles the process of fetching MEP USD data from the CriptoYa API,
+    transforming the data, and loading it into a PostgreSQL or Redshift table.
+
+    Tasks:
+        - extract_data_from_api: Fetches MEP USD prices from the CriptoYa API.
+        - transform_mep_usd_from_criptoya_api: Transforms the raw data into the required format.
+        - load_mep_prices_to_postgres: Loads the transformed data into the 'raw_mep_ars_prices' table.
+
+    Returns:
+        None: This DAG doesn't return any values.
     """
 
     extract_task = PythonOperator(
@@ -38,6 +47,7 @@ def elt_criptoya_mep() -> None:
         },
     )
 
+    # Define task dependencies
     extract_task >> transform_task >> load_task
 
 

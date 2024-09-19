@@ -1,10 +1,8 @@
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
-from airflow.models import Variable
-
-from functions.extract_data import *
-from functions.transform_data import *
-from functions.load_data import *
+from dags.functions.extract_data import extract_data_from_api
+from dags.functions.transform_data import transform_usdt_from_criptoya_api
+from dags.functions.load_data import load_data_to_redshift
 
 
 @dag(
@@ -14,7 +12,18 @@ from functions.load_data import *
 )
 def elt_criptoya_usdt() -> None:
     """
-    ETL for usdt-ars prices for cripto exchanges.
+    ETL pipeline for extracting, transforming, and loading USDT prices from CriptoYa API.
+
+    This DAG orchestrates an ETL process that extracts USDT data from the CriptoYa API,
+    transforms the data, and loads it into a PostgreSQL or Redshift table.
+
+    Tasks:
+        - extract_data_from_api: Fetches USDT prices from the CriptoYa API.
+        - transform_usdt_from_criptoya_api: Transforms the raw USDT data for further processing.
+        - load_usdt_prices_to_postgres: Loads the transformed USDT prices into the 'raw_usdt_ars_prices' table.
+
+    Returns:
+        None: This DAG doesn't return any values.
     """
 
     extract_task = PythonOperator(
@@ -38,6 +47,7 @@ def elt_criptoya_usdt() -> None:
         },
     )
 
+    # Define task dependencies
     extract_task >> transform_task >> load_task
 
 

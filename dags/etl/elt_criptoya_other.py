@@ -1,10 +1,8 @@
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
-from airflow.models import Variable
-
-from functions.extract_data import *
-from functions.transform_data import *
-from functions.load_data import *
+from dags.functions.extract_data import extract_data_from_api
+from dags.functions.transform_data import transform_other_usd_from_criptoya_api
+from dags.functions.load_data import load_data_to_redshift
 
 
 @dag(
@@ -14,7 +12,18 @@ from functions.load_data import *
 )
 def elt_criptoya_other() -> None:
     """
-    ETL for other dollar prices.
+    ETL pipeline for extracting, transforming, and loading Other USD prices (e.g Saving, Card and Blue) from CriptoYa API.
+
+    This DAG orchestrates an ETL process to retrieve data for other USD prices (e.g Saving, Card and Blue)
+    using the CriptoYa API, transforms it, and loads it into a PostgreSQL or Redshift table.
+
+    Tasks:
+        - extract_data_from_api: Fetches USD prices from other sources via the CriptoYa API.
+        - transform_other_usd_from_criptoya_api: Transforms the raw USD data for further use.
+        - load_other_prices_to_postgres: Loads the transformed data into the 'raw_other_ars_prices' table.
+
+    Returns:
+        None: This DAG doesn't return any values.
     """
 
     extract_task = PythonOperator(
@@ -38,6 +47,7 @@ def elt_criptoya_other() -> None:
         },
     )
 
+    # Define task dependencies
     extract_task >> transform_task >> load_task
 
 
