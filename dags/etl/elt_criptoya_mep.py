@@ -40,9 +40,7 @@ def elt_criptoya_mep() -> NoneType:
     transform_task: PythonOperator = PythonOperator(
         task_id="transform_mep_usd_from_criptoya_api",
         python_callable=transform_mep_usd_from_criptoya_api,
-        op_kwargs={
-            "data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"
-        },
+        op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"},
     )
 
     load_task: PythonOperator = PythonOperator(

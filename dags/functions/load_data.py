@@ -32,9 +32,7 @@ def connect_to_redshift_engine():
         return engine
 
     except OperationalError as e:
-        raise RuntimeError(
-            f"An error occurred while connecting to Redshift: {str(e)}"
-        )
+        raise RuntimeError(f"An error occurred while connecting to Redshift: {str(e)}")
 
 
 def load_data_to_redshift(df_json: str, table_name: str) -> None:

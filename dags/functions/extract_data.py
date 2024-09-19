@@ -31,9 +31,7 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
             f"Invalid API name: {api_name}. Valid options are 'usdt', 'usd', or 'bcra'."
         )
 
-    headers: Dict[str, str] = (
-        {"Accept-Language": "en-US"} if api_name == "bcra" else {}
-    )
+    headers: Dict[str, str] = {"Accept-Language": "en-US"} if api_name == "bcra" else {}
 
     try:
         response = requests.get(api_url, headers=headers, verify=False)
