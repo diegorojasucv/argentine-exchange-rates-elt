@@ -1,6 +1,6 @@
 """ETL for bcra indicators"""
 
-from typing import NoneType
+from types import NoneType
 
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
