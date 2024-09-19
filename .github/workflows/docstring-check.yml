@@ -1,0 +1,49 @@
+name: Docstring Coverage Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  docstring-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install interrogate
+
+    - name: Run interrogate and generate coverage report
+      run: |
+        interrogate -v dags/ > docstring-coverage-report.txt
+
+    - name: Comment on Pull Request with Docstring Coverage Report
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const coverageReport = fs.readFileSync('docstring-coverage-report.txt', 'utf8');
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `### Python Docstring Coverage Report:\n\`\`\`\n${coverageReport}\n\`\`\``
+          })
+
+    - name: Fail if docstring coverage is below threshold
+      run: |
+        interrogate -v dags/ --fail-under 95
