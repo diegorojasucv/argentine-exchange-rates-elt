@@ -1,7 +1,8 @@
-import pandas as pd
 import ast
 from datetime import datetime
 from typing import Any, Dict
+
+import pandas as pd
 
 COLUMNS_TO_RENAME_USDT: Dict[str, str] = {
     "index": "exchange_name",
@@ -46,9 +47,7 @@ def transform_usdt_from_criptoya_api(data: str, **kwargs: Any) -> str:
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["time"], unit="s").astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    df = df[
-        ["index", "ask", "totalAsk", "bid", "totalBid", "updated_at", "extracted_at"]
-    ]
+    df = df[["index", "ask", "totalAsk", "bid", "totalBid", "updated_at", "extracted_at"]]
     df.rename(columns=COLUMNS_TO_RENAME_USDT, inplace=True)
     df_json = df.to_json()
     return df_json
@@ -130,9 +129,7 @@ def transform_bcra_from_api(data: str, **kwargs: Any) -> str:
     df = pd.DataFrame.from_dict(data_dict["results"])
     df["updated_at"] = pd.to_datetime(df["fecha"]).astype(str)
     df["extracted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    df = df[
-        ["idVariable", "cdSerie", "descripcion", "valor", "updated_at", "extracted_at"]
-    ]
+    df = df[["idVariable", "cdSerie", "descripcion", "valor", "updated_at", "extracted_at"]]
     df.rename(columns=COLUMNS_TO_RENAME_BCRA, inplace=True)
     df_json = df.to_json()
     return df_json

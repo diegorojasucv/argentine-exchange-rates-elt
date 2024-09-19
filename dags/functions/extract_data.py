@@ -1,5 +1,6 @@
-import requests
 from typing import Any, Dict, Optional
+
+import requests
 
 
 def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
@@ -24,9 +25,7 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
     api_url: Optional[str] = api_urls.get(api_name)
 
     if not api_url:
-        raise ValueError(
-            f"Invalid API name: {api_name}. Valid options are 'usdt', 'usd', or 'bcra'."
-        )
+        raise ValueError(f"Invalid API name: {api_name}. Valid options are 'usdt', 'usd', or 'bcra'.")
 
     headers: Dict[str, str] = {"Accept-Language": "en-US"} if api_name == "bcra" else {}
 

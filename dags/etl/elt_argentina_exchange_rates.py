@@ -1,7 +1,7 @@
 from datetime import datetime
+
 from airflow.models.dag import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
-from typing import NoneType
 
 with DAG(
     dag_id="elt_argentina_exchange_rates",
@@ -54,10 +54,4 @@ with DAG(
         trigger_dag_id="dbt_trigger",
     )
 
-    (
-        elt_criptoya_usd_trigger
-        >> elt_criptoya_mep_trigger
-        >> elt_criptoya_other_trigger
-        >> elt_bcra_indicators_trigger
-        >> dbt_trigger
-    )
+    (elt_criptoya_usd_trigger >> elt_criptoya_mep_trigger >> elt_criptoya_other_trigger >> elt_bcra_indicators_trigger >> dbt_trigger)

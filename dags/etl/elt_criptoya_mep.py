@@ -1,9 +1,11 @@
+from typing import NoneType
+
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
+
 from dags.functions.extract_data import extract_data_from_api
-from dags.functions.transform_data import transform_mep_usd_from_criptoya_api
 from dags.functions.load_data import load_data_to_redshift
-from typing import NoneType
+from dags.functions.transform_data import transform_mep_usd_from_criptoya_api
 
 
 @dag(
