@@ -1,3 +1,5 @@
+"""DAG that triggers a dbt task group for executing dbt commands"""
+
 from typing import NoneType
 
 from airflow.decorators import dag
@@ -14,8 +16,6 @@ from include.profiles import redshift_db
 )
 def dbt_trigger() -> NoneType:
     """
-    DAG that triggers a dbt task group for executing dbt commands.
-
     This function sets up and runs a dbt task group using the provided
     configurations for the dbt project, profile, and virtual environment execution.
     It is designed to be scheduled and managed by Airflow.
