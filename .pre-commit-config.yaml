@@ -8,24 +8,3 @@ repos:
       stages: [pre-commit]
     - id: trailing-whitespace
       stages: [pre-commit]
-- repo: https://github.com/psf/black
-  rev: 22.10.0
-  hooks:
-    - id: black
-      stages: [pre-commit]
-- repo: https://github.com/pycqa/flake8
-  rev: 3.8.4
-  hooks:
-    - id: flake8
-      stages: [pre-commit]
-# - repo: https://github.com/timothycrosley/isort
-#   rev: 5.10.1
-#   hooks:
-#     - id: isort
-#       stages: [pre-commit]
-- repo: https://github.com/econchick/interrogate
-  rev: 1.7.0
-  hooks:
-  - id: interrogate
-    stages: [pre-commit]
-    args: [-vv, -i, --fail-under=95]
