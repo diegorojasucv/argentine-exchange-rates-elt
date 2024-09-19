@@ -28,7 +28,7 @@ jobs:
 
     - name: Run interrogate and generate coverage report
       run: |
-        interrogate -vv dags/ > docstring-coverage-report.txt
+        interrogate -v dags/ > docstring-coverage-report.txt
 
     - name: Comment on Pull Request with Docstring Coverage Report
       if: github.event_name == 'pull_request'
@@ -46,4 +46,4 @@ jobs:
 
     - name: Fail if docstring coverage is below threshold
       run: |
-        interrogate -vv dags/ --fail-under 90
+        interrogate -v dags/ --fail-under 95
