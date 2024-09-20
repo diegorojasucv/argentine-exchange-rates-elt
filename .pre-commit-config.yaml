@@ -18,11 +18,11 @@ repos:
   hooks:
     - id: flake8
       stages: [pre-commit]
-# - repo: https://github.com/timothycrosley/isort
-#   rev: 5.7.0
-#   hooks:
-#     - id: isort
-#       stages: [pre-commit]
+- repo: https://github.com/timothycrosley/isort
+  rev: 5.13.2
+  hooks:
+    - id: isort
+      stages: [pre-commit]
 - repo: https://github.com/econchick/interrogate
   rev: 1.7.0
   hooks:
