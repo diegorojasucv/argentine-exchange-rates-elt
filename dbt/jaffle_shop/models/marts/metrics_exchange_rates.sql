@@ -2,14 +2,6 @@
 {% set gap_over_official_threshold = 0.45 %}
 {% set arbitrage_threshold = 0.01 %}
 
-{% set metrics_threshold  = {
-
-    'total_bid_price': 0.01,
-    'gap_over_official_wholesale_exchange_rate': 0.015,
-    'gap_over_mep_exchange_rate': 0.03
-
-} %}
-
 {% set top_cripto_exchanges =
 
     'Buenbit',
@@ -91,7 +83,7 @@ gaps_metrics as (
 
 ),
 
-metrics_lagged as (
+arbitrage_metrics as (
 
     select
 
@@ -101,62 +93,14 @@ metrics_lagged as (
             'max_total_bid_price', 'min_total_ask_price'
         ) }} - 1 as arbitrage_ratio,
 
+        arbitrage_ratio > {{ arbitrage_threshold }} as is_arbitrage_opportunity,
+
         gap_over_official_wholesale_exchange_rate > {{ gap_over_official_threshold }}
             as is_high_official_gap,
         gap_over_mep_exchange_rate > {{ gap_over_mep_threshold }}
             as is_high_mep_gap
 
-        {% for metrics in metrics_threshold %}
-
-            , lag({{ metrics }}) over (
-                partition by exchange_name
-                order by processed_ars_at
-            ) as {{ metrics }}_lagged
-
-        {% endfor %}
-
-
     from gaps_metrics
-
-),
-
-change_metrics as (
-
-    select
-
-        *,
-
-        arbitrage_ratio > {{ arbitrage_threshold }} as is_arbitrage_opportunity
-
-        {% for metrics, threshold  in metrics_threshold.items() %}
-
-            , {{ dbt_utils.safe_divide(
-                metrics,
-                metrics ~ '_lagged'
-            ) }} - 1 as change_{{ metrics }}
-
-        {% endfor %}
-
-
-    from metrics_lagged
-
-),
-
-is_high_change_metrics as (
-
-    select
-
-        *
-
-        {% for metrics, threshold  in metrics_threshold.items() %}
-
-            , change_{{ metrics }} > {{ threshold }}
-                as is_high_change_{{ metrics }}
-
-        {% endfor %}
-
-
-    from change_metrics
 
 ),
 
@@ -179,13 +123,9 @@ final as (
         official_retailer_dollar,
         official_wholesale_dollar,
         avg_mep_dollar,
-        total_bid_price_lagged,
         gap_over_official_retailer_exchange_rate,
         gap_over_official_wholesale_exchange_rate,
         gap_over_mep_exchange_rate,
-        change_total_bid_price,
-        change_gap_over_official_wholesale_exchange_rate,
-        change_gap_over_mep_exchange_rate,
         spread,
         arbitrage_ratio,
         is_p2p_exchange,
@@ -193,14 +133,11 @@ final as (
         is_high_mep_gap,
         is_arbitrage_opportunity,
         is_high_official_gap,
-        is_high_change_total_bid_price,
-        is_high_change_gap_over_official_wholesale_exchange_rate,
-        is_high_change_gap_over_mep_exchange_rate,
         updated_ars_at,
         extracted_ars_at,
         processed_ars_at
 
-    from is_high_change_metrics
+    from arbitrage_metrics
 
 )
 

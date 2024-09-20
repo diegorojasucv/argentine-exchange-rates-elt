@@ -13,7 +13,8 @@ base as (
         indicator_description,
         coalesce(total_bid_price, 0) as total_bid_price,
         cast(updated_at as timestamp) as updated_at,
-        cast(extracted_at as timestamp) as extracted_at
+        cast(extracted_at as timestamp) as extracted_at,
+        cast(extracted_at as date) as extracted_date
 
     from source
 
@@ -31,7 +32,7 @@ stage as (
         indicator_description,
         cast('BCRA' as varchar) as source_reference,
         coalesce(total_bid_price, 0) as total_bid_price,
-        avg(coalesce(total_bid_price, 0)) over () as avg_total_bid_price,
+        avg(coalesce(total_bid_price, 0)) over (partition by extracted_date) as avg_total_bid_price,
 
         convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at)
             as updated_ars_at,

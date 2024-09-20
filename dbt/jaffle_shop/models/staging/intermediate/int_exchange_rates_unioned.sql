@@ -52,8 +52,8 @@ fields_coalesced as (
         coalesce(total_bid_price, 0) as total_bid_price,
         coalesce(ask_price, 0) as ask_price,
         coalesce(total_ask_price, 0) as total_ask_price,
-        avg_total_bid_price,
-        avg_total_ask_price,
+        coalesce(avg_total_bid_price, 0) as avg_total_bid_price,
+        coalesce(avg_total_ask_price, 0) as avg_total_ask_price,
         updated_ars_at,
         extracted_ars_at,
         convert_timezone('UTC', 'America/Argentina/Buenos_Aires', getdate()) as processed_ars_at
@@ -73,28 +73,24 @@ transformations as (
         {%- for types_bcra_exchange_rate in types_bcra_exchange_rates %}
 
             coalesce(
-                last_value(
+                avg(
                     case
                         when exchange_name = '{{ types_bcra_exchange_rate }}'
                             then total_bid_price end
-                ) over (partition by exchange_name
-                        order by updated_ars_at rows between unbounded preceding and current row
-                        ),
+                ) over (partition by extracted_ars_at::date),
                 0
             ) as {{ dbt_utils.slugify(types_bcra_exchange_rate) }},
 
         {% endfor %}
 
-        coalesce(
-            last_value(
-                case
-                    when exchange_name like 'mep%'
-                        then avg_total_bid_price end
-            ) over (partition by exchange_name
-                    order by updated_ars_at rows between unbounded preceding and current row
-                    ),
-            0
-        ) as avg_mep_dollar
+            coalesce(
+                avg(
+                    case
+                        when exchange_name like 'mep%'
+                            then avg_total_bid_price end
+                ) over (partition by extracted_ars_at::date),
+                0
+            ) as avg_mep_dollar
 
     from fields_coalesced
 
@@ -122,7 +118,7 @@ final as (
 		avg_total_ask_price,
 		official_retailer_dollar,
 		official_wholesale_dollar,
-		avg_mep_dollar,
+	    avg_mep_dollar,
 		updated_ars_at,
         extracted_ars_at,
 		processed_ars_at
