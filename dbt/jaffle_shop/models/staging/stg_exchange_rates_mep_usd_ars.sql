@@ -11,7 +11,8 @@ base as (
         mep_name as exchange_name,
         coalesce(total_bid_price, 0) as total_bid_price,
         cast(updated_at as timestamp) as updated_at,
-        cast(extracted_at as timestamp) as extracted_at
+        cast(extracted_at as timestamp) as extracted_at,
+        cast(extracted_at as date) as extracted_date
 
     from source
 
@@ -29,7 +30,7 @@ stage as (
 
         cast('Criptoya - MEP' as varchar) as source_reference,
         total_bid_price,
-        avg(total_bid_price) over () as avg_total_bid_price,
+        avg(total_bid_price) over (partition by extracted_date) as avg_total_bid_price,
 
         convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at)
             as updated_ars_at,
