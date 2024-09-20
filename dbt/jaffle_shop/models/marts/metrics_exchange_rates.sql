@@ -29,7 +29,7 @@
 
 with int_unioned_model as (
 
-    select * from {{ ref('argentina_exchange_rates') }}
+    select * from {{ ref('int_exchange_rates_unioned') }}
 
 ),
 
