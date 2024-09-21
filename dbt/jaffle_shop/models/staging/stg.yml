@@ -218,3 +218,20 @@ unit_tests:
           - {exchange_name: 'mep al30 ci',    total_bid_price: 1247,  extracted_ars_at: '2024-09-11 18:24:19', avg_total_bid_price: 1231}
           - {exchange_name: 'mep al30 24 hs', total_bid_price: 1250,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
           - {exchange_name: 'mep al30 24 hs', total_bid_price: 1260,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
+
+  - name: test_avg_and_dates_official_model
+    description: "Check if my partitioned average and date calculations work correctly."
+    model: stg_exchange_rates_official_usd_ars
+    given:
+      - input: source('redshift_source', 'raw_bcra_indicators')
+        rows:
+          - {indicator_id: '4',  total_bid_price: 1215,  extracted_at: '2024-09-11 21:24:19'}
+          - {indicator_id: '4',  total_bid_price: 1247,  extracted_at: '2024-09-11 21:24:19'}
+          - {indicator_id: '4',  total_bid_price: 1250,  extracted_at: '2024-09-12 21:24:19'}
+          - {indicator_id: '4',  total_bid_price: 1260,  extracted_at: '2024-09-12 21:24:19'}
+    expect:
+        rows:
+          - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1215,  extracted_ars_at: '2024-09-11 18:24:19', avg_total_bid_price: 1231}
+          - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1247,  extracted_ars_at: '2024-09-11 18:24:19', avg_total_bid_price: 1231}
+          - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1250,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
+          - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1260,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
