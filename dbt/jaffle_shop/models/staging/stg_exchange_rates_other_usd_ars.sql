@@ -2,7 +2,7 @@
 
     'ahorro': ['Saving', 'Exchange rate at which Argentine citizens can buy a limited amount of US dollars for personal savings.'],
     'tarjeta': ['Tourist', 'Exchange rate used for credit card purchases in foreign currency.'],
-    'blue': ['Black Market', 'Parallel market for buying and selling US dollars in Argentina, also known as the "informal dollar" or "black market dollar".']
+    'blue': ['Black', 'Parallel market for buying and selling US dollars in Argentina, also known as the "informal dollar" or "black market dollar".']
 
 } %}
 
