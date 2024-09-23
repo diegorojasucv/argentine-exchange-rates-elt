@@ -1,8 +1,8 @@
 {% set dollars_descriptions = {
 
-    'ahorro': ['Saving Dollar', 'Exchange rate at which Argentine citizens can buy a limited amount of US dollars for personal savings.'],
-    'tarjeta': ['Tourist Dollar', 'Exchange rate used for credit card purchases in foreign currency.'],
-    'blue': ['Black Market Dollar', 'Parallel market for buying and selling US dollars in Argentina, also known as the "informal dollar" or "black market dollar".']
+    'ahorro': ['Saving', 'Exchange rate at which Argentine citizens can buy a limited amount of US dollars for personal savings.'],
+    'tarjeta': ['Tourist', 'Exchange rate used for credit card purchases in foreign currency.'],
+    'blue': ['Black Market', 'Parallel market for buying and selling US dollars in Argentina, also known as the "informal dollar" or "black market dollar".']
 
 } %}
 

@@ -202,7 +202,7 @@ models:
           - not_null
 
 unit_tests:
-  - name: test_avg_and_dates_mep_model
+  - name: test_avg_and_date_mep_model
     description: "Check if my partitioned average and date calculations work correctly."
     model: stg_exchange_rates_mep_usd_ars
     given:
@@ -219,7 +219,7 @@ unit_tests:
           - {exchange_name: 'mep al30 24 hs', total_bid_price: 1250,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
           - {exchange_name: 'mep al30 24 hs', total_bid_price: 1260,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
 
-  - name: test_avg_and_dates_official_model
+  - name: test_avg_and_date_official_model
     description: "Check if my partitioned average and date calculations work correctly."
     model: stg_exchange_rates_official_usd_ars
     given:
@@ -235,3 +235,24 @@ unit_tests:
           - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1247,  extracted_ars_at: '2024-09-11 18:24:19', avg_total_bid_price: 1231}
           - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1250,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
           - {exchange_name: "Official Retailer Dollar",   source_reference: 'BCRA', total_bid_price: 1260,  extracted_ars_at: '2024-09-12 18:24:19', avg_total_bid_price: 1255}
+
+  - name: test_avg_and_date_other_model
+    description: "Check if my partitioned average and date calculations work correctly."
+    model: stg_exchange_rates_other_usd_ars
+    given:
+      - input: source('redshift_source', 'raw_other_ars_prices')
+        rows:
+          - {exchange_name: 'ahorro',   total_ask_price: 1220, total_bid_price: 1210,  extracted_at: '2024-09-11 21:24:19'}
+          - {exchange_name: 'tarjeta',  total_ask_price: 1230, total_bid_price: 1220,  extracted_at: '2024-09-11 21:24:19'}
+          - {exchange_name: 'blue',     total_ask_price: 1240, total_bid_price: 1230,  extracted_at: '2024-09-11 21:24:19'}
+          - {exchange_name: 'ahorro',   total_ask_price: 1250, total_bid_price: 1240,  extracted_at: '2024-09-12 21:24:19'}
+          - {exchange_name: 'tarjeta',  total_ask_price: 1260, total_bid_price: 1250,  extracted_at: '2024-09-12 21:24:19'}
+          - {exchange_name: 'blue',     total_ask_price: 1270, total_bid_price: 1260,  extracted_at: '2024-09-12 21:24:19'}
+    expect:
+        rows:
+          - {exchange_name: "Saving",        source_reference: 'Criptoya - USD', total_ask_price: 1220, total_bid_price: 1210, extracted_ars_at: '2024-09-11 18:24:19', avg_total_ask_price: 1230, avg_total_bid_price: 1220}
+          - {exchange_name: "Tourist",       source_reference: 'Criptoya - USD', total_ask_price: 1230, total_bid_price: 1220, extracted_ars_at: '2024-09-11 18:24:19', avg_total_ask_price: 1230, avg_total_bid_price: 1220}
+          - {exchange_name: 'Black Market',  source_reference: 'Criptoya - USD', total_ask_price: 1240, total_bid_price: 1230, extracted_ars_at: '2024-09-11 18:24:19', avg_total_ask_price: 1230, avg_total_bid_price: 1220}
+          - {exchange_name: "Saving",        source_reference: 'Criptoya - USD', total_ask_price: 1250, total_bid_price: 1240, extracted_ars_at: '2024-09-12 18:24:19', avg_total_ask_price: 1260, avg_total_bid_price: 1250}
+          - {exchange_name: "Tourist",       source_reference: 'Criptoya - USD', total_ask_price: 1260, total_bid_price: 1250, extracted_ars_at: '2024-09-12 18:24:19', avg_total_ask_price: 1260, avg_total_bid_price: 1250}
+          - {exchange_name: 'Black Market',  source_reference: 'Criptoya - USD', total_ask_price: 1270, total_bid_price: 1260, extracted_ars_at: '2024-09-12 18:24:19', avg_total_ask_price: 1260, avg_total_bid_price: 1250}
