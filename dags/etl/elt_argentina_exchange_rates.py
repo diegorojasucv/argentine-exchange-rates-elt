@@ -2,13 +2,16 @@
 
 from datetime import datetime
 
+import pendulum
 from airflow.models.dag import DAG
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
+local_tz = pendulum.timezone("America/Argentina/Buenos_Aires")
+
 with DAG(
     dag_id="elt_argentina_exchange_rates",
-    schedule_interval="@daily",
-    start_date=datetime(2024, 9, 23),
+    schedule_interval="0 12 * * *",
+    start_date=datetime(2024, 9, 23, tzinfo=local_tz),
     catchup=False,
     tags=["main_elt"],
 ) as dag:
