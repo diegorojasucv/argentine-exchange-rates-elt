@@ -7,6 +7,7 @@
 4. [Data Pipeline](#data-pipeline)
 5. [DAGs](#dags)
 6. [Methodology](#methodology)
+7. [Documentation](#documentation)
 
 ## Introduction
 This project implements an ELT (Extract, Load, Transform) pipeline to retrieve exchange rates for various cryptocurrencies and currencies in Argentina. The pipeline uses dbt for data transformation, Airflow DAGs for orchestration, and Amazon Redshift as data storage and computing.
@@ -83,7 +84,18 @@ Several stage models handle data transformations from the source. Below is an ex
 
 
 ## DAGs
-TBD
+### ETL
+- **elt_argentina_exchange_rates.py**: Handles the extraction, transformation, and loading of Argentine exchange rate data from various sources.
+- **dbt_trigger**: This script triggers the execution of dbt (Data Build Tool) models, facilitating data transformations in the ETL pipeline.
+- **elt_criptoya_other.py**: Extracts and processes cryptocurrency exchange rates (except USDT) from CriptoYa API.
+- **elt_criptoya_usdt.py**: Focuses on the extraction and transformation of USDT (Tether) exchange rates from CriptoYa API.
+- **elt_criptoya_mep.py**: This ETL pipeline focuses on extracting MEP (USD) prices from the CriptoYa API.
+- **elt_bcra_indicators.py**: This ETL pipeline is responsible for extracting, transforming, and loading BCRA (Central Bank of Argentina) indicators data.
+
+### Functions
+- **extract_data**: Fetches exchange rates from APIs.
+- **transform_data**: Transforms raw data.
+- **load_data**: Loads transformed data into a database.
 
 ## Methodology
 
@@ -102,4 +114,8 @@ We implemented the following automated checks to maintain code quality and consi
 ### Tests
 - **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data.
 - **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`CASE WHEN` statements). These tests ensure that all business logic is accurately reflected in the data pipeline.
+- **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
 
+## Documentation
+
+TBD
