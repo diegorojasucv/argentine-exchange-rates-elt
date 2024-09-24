@@ -23,7 +23,7 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
         requests.exceptions.RequestException: If there is an issue with the API request.
     """
     api_urls = {
-        "usdt": "https://criptoya.comxfxjs/api/usdt/ars/100",
+        "usdt": "https://criptoya.com/api/usdt/ars/100",
         "usd": "https://criptoya.com/api/dolar",
         "bcra": "https://api.bcra.gob.ar/estadisticas/v2.0/principalesvariables",
     }
