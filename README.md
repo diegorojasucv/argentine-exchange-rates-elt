@@ -5,7 +5,8 @@
 2. [Quickstart](#quickstart)
 3. [Setup](#setup)
 4. [Data Pipeline](#data-pipeline)
-5. [Methodology](#methodology)
+5. [DAGs](#dags)
+6. [Methodology](#methodology)
 
 ## Introduction
 This project implements an ELT (Extract, Load, Transform) pipeline to retrieve exchange rates for various cryptocurrencies and currencies in Argentina. The pipeline uses dbt for data transformation, Airflow DAGs for orchestration, and Amazon Redshift as data storage and computing.
@@ -78,6 +79,10 @@ Several stage models handle data transformations from the source. Below is an ex
 
 -   **metrics_exchange_rates**: In this model, all the metrics of interest were created. Metrics measuring the gap amoung all exchange rates and official dollars (retailer and wholesale), MEP, Blue, etc., were created, along with boolean variables to check if the gaps exceeded certain thresholds.
 ### Data Lineage
+![image](https://github.com/user-attachments/assets/9fb3fac8-9994-4483-8d84-063ebe5469b2)
+
+
+## DAGs
 TBD
 
 ## Methodology
