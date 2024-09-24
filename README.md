@@ -54,7 +54,7 @@ To get started, you'll need:
 ## Data Pipeline
 ### 🏦Source
 
-For all sources, we use the Python Source to fetch data from the API using a Python script.
+For all sources, Python code was used to fetch data from APIs.
 
 - **raw_bcra_indicators**: The official exchange rates (wholesale and retailer) were extracted using the Central Bank of Argentina's [API](https://www.bcra.gob.ar/BCRAyVos/catalogo-de-APIs-banco-central.asp).
 - **Criptoya API**: This [API](https://criptoya.com/api) provided the crypto dollar (USDT), MEP (Electronic Payment Market), savings dollar, tourist dollar, and blue dollar (or black market). Two different endpoints were used:
@@ -72,20 +72,29 @@ Several stage models handle data transformations from the source. Below is an ex
 - **stg_exchange_rates_mep_usd_ars**: Renames were done, and new average fields were added.
 - **stg_exchange_rates_official_usd_ars**: Only the indicators needed were filtered, renamed, and new fields were added. The API provided other economic indicators as well.
 - **stg_exchange_rates_other_usd_ars**: A variable (dollars_descriptions) was created to rename some names and add descriptions for these variables. A `for` loop in Jinja was used to iterate over the variable, adhering to the DRY principle.
-- **int_exchange_rates_unioned**: A model was created that joined all the stage models, allowing all the exchange rates needed to be in a single model. The `union_relations` macro from dbt facilitated this task. Since the data were immutable event streams, an incremental model was created to append data to this table every run, maintaining historical information in this model.
+- **int_exchange_rates_unioned**: A model was created that joined all the stage models, allowing all the exchange rates needed to be in a single model. The `union_relations` macro from dbt facilitated this task.
 
 ### 📊 Analytics
 
--   **metrics_exchange_rates**: In this model, all the metrics of interest for sending alerts to Slack were created. Metrics measuring the gap amoung all exchange rates and official dollars (retailer and wholesale), MEP, Blue, etc., were created, along with boolean variables to check if the gaps exceeded certain thresholds. Additionally, price variations from the last available value were added to detect abrupt price changes. Metrics to capture arbitrage opportunities were also included.
-
+-   **metrics_exchange_rates**: In this model, all the metrics of interest were created. Metrics measuring the gap amoung all exchange rates and official dollars (retailer and wholesale), MEP, Blue, etc., were created, along with boolean variables to check if the gaps exceeded certain thresholds.
 ### Data Lineage
 TBD
 
 ## Methodology
-### Tools Used
-- dbt: SQL and transformations
-- Redshift: Data storage and computing
-- Airflow: Orchestration
 
-### Github Actions
-TBD
+### Tools Used
+- **dbt**: For SQL transformations and data modeling.
+- **Redshift**: Used for data storage and processing, enabling scalable computation.
+- **Airflow**: Handles orchestration and scheduling of the data pipeline.
+
+### GitHub Actions
+We implemented the following automated checks to maintain code quality and consistency:
+- **Docstring Coverage**: Ensures that all Python functions and methods are properly documented.
+- **Test Coverage**: Monitors the percentage of code covered by unit tests.
+- **Python Code Formatter**: Applies consistent formatting to all Python code using `Black`.
+- **SQL Linter**: Enforces SQL style and syntax rules using `SQLFluff`.
+
+### Tests
+- **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data.
+- **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`CASE WHEN` statements). These tests ensure that all business logic is accurately reflected in the data pipeline.
+
