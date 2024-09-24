@@ -60,5 +60,3 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
         raise RuntimeError(
             f"An error occurred while loading data to Redshift: {str(e)}"
         )
-    finally:
-        connection.close()
