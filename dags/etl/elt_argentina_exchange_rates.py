@@ -10,7 +10,7 @@ local_tz = pendulum.timezone("America/Argentina/Buenos_Aires")
 
 with DAG(
     dag_id="elt_argentina_exchange_rates",
-    schedule_interval="0 12 * * *",
+    schedule_interval="0 12 * * 1-5",
     start_date=datetime(2024, 9, 23, tzinfo=local_tz),
     catchup=False,
     tags=["main_elt"],
