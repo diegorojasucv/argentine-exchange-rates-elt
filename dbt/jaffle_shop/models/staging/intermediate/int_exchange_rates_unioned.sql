@@ -96,7 +96,7 @@ transformations as (
 
     {% if is_incremental() %}
 
-    where processed_ars_at > (select max(processed_ars_at) as max_processed_ars_at from {{ this }})
+    where extracted_ars_at > (select max(extracted_ars_at) as max_extracted_ars_at from {{ this }})
 
     {% endif %}
 
