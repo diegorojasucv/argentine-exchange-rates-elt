@@ -1,7 +1,8 @@
-import pytest
-import requests
-from requests.exceptions import RequestException
 from unittest.mock import patch
+
+import pytest
+from requests.exceptions import RequestException
+
 from dags.functions.extract_data import extract_data_from_api
 
 
@@ -75,5 +76,5 @@ def test_api_request_failure(mock_get):
     """Test for API request failure handling."""
     mock_get.side_effect = RequestException
 
-    result = extract_data_from_api("usdt")
-    assert result is None
+    with pytest.raises(RequestException):
+        extract_data_from_api("usdt")

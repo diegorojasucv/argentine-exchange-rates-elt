@@ -16,7 +16,11 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
 
     Returns:
         Optional[Dict]: The response data from the API in JSON format if the request
-        was successful, otherwise None.
+        is successful.
+
+    Raises:
+        ValueError: If an invalid API name is provided.
+        requests.exceptions.RequestException: If there is an issue with the API request.
     """
     api_urls = {
         "usdt": "https://criptoya.com/api/usdt/ars/100",
@@ -38,5 +42,5 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
         response.raise_for_status()
         data: Dict = response.json()
         return data
-    except requests.exceptions.RequestException:
-        return None
+    except requests.exceptions.RequestException as e:
+        raise e
