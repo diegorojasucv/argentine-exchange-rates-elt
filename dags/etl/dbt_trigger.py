@@ -31,8 +31,8 @@ def dbt_trigger() -> NoneType:
     It is designed to be scheduled and managed by Airflow.
 
     Task Details:
-    - dbt_task: Trigger a build run. This means that a run job and a test job are executed.
-    - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
+        - dbt_task: Trigger a build run. This means that a run job and a test job are executed.
+        - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
 
     Returns:
         None: This DAG doesn't return any values.
