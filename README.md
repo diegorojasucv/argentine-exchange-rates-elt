@@ -6,8 +6,8 @@
 3. [Setup](#setup)
 4. [Data Pipeline](#data-pipeline)
 5. [DAGs](#dags)
-6. [Methodology](#methodology)
-7. [Alerting](#alerting)
+6. [Alerting](#alerting)
+7. [Methodology](#methodology)
 8. [Documentation](#documentation)
 
 ## Introduction
@@ -98,6 +98,31 @@ Several stage models handle data transformations from the source. Below is an ex
 - **transform_data**: Transforms raw data.
 - **load_data**: Loads transformed data into a database.
 
+## 🚨 Alerting
+
+The data pipeline implements an alerting system that notifies the status of ETL (Extract, Transform, Load) processes via email notifications. Below are the key components and how this system operates.
+
+### Key Components
+
+1. **Email Sending Functions (alert_email.py)**:
+   - The `send_status_email` function is responsible for sending an email that indicates whether an ETL process was successful or has failed. 
+   - This function can receive contextual information that will be included in the email in case of a failure.
+
+2. **Failure Callback**:
+   - The `on_failure_callback` function is used as a callback in Airflow to handle task errors. 
+   - When a task fails, this function is invoked, which in turn calls `send_status_email` to notify the failure along with relevant information (such as the DAG, the specific task, the execution date, and the encountered error).
+
+### How It Works
+
+1. **Email Configuration**:
+   - The system uses the Airflow variable `email_to_send_alert`, which was configured in the Airflow Variables.
+2. **Sending Alerts**:
+   - After completing a task in the DAG, its status (success or failure) is evaluated.
+   - If the task is successful, a success email is sent informing that the ETL process has completed successfully.
+   - If the task fails, an error email is sent that includes details about the error and the task's status.
+3. **Example emails sent**:
+    ![image](https://github.com/user-attachments/assets/b12e803c-b32d-4a44-b0b3-bf6c41304b0c)
+
 ## Methodology
 
 ### Tools Used
@@ -116,32 +141,6 @@ We implemented the following automated checks to maintain code quality and consi
 - **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data.
 - **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`CASE WHEN` statements). These tests ensure that all business logic is accurately reflected in the data pipeline.
 - **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
-
-## 🚨 Alerting
-
-The data pipeline implements an alerting system that notifies the status of ETL (Extract, Transform, Load) processes via email notifications. Below are the key components and how this system operates.
-
-### Key Components
-
-1. **Email Sending Functions (alert_email.py)**:
-   - The `send_status_email` function is responsible for sending an email that indicates whether an ETL process was successful or has failed. 
-   - This function can receive contextual information that will be included in the email in case of a failure.
-
-2. **Failure Callback**:
-   - The `on_failure_callback` function is used as a callback in Airflow to handle task errors. 
-   - When a task fails, this function is invoked, which in turn calls `send_status_email` to notify the failure along with relevant information (such as the DAG, the specific task, the execution date, and the encountered error).
-
-## How It Works
-
-1. **Email Configuration**:
-   - The system uses the Airflow variable `email_to_send_alert`, which was configured in the Airflow Variables.
-2. **Sending Alerts**:
-   - After completing a task in the DAG, its status (success or failure) is evaluated.
-   - If the task is successful, a success email is sent informing that the ETL process has completed successfully.
-   - If the task fails, an error email is sent that includes details about the error and the task's status.
-3. **Email example**:
-    ![image](https://github.com/user-attachments/assets/b12e803c-b32d-4a44-b0b3-bf6c41304b0c)
-
 
 ## Documentation
 
