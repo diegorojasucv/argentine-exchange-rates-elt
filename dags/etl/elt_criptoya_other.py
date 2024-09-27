@@ -34,28 +34,28 @@ def elt_criptoya_other() -> NoneType:
 
     The DAG comprises the following tasks:
 
-    - `extract_data_from_api`: Fetches USD prices from other sources via the CriptoYa API.
-    - `transform_other_usd_from_criptoya_api`: Transforms the raw USD data for further use.
-    - `load_other_prices_to_postgres`: Loads the transformed data into the `raw_other_ars_prices` table.
-    - `alerting_email`: Sends a success email notification if all previous tasks are successful.
+    - extract_data_from_api: Fetches USD prices from other sources via the CriptoYa API.
+    - transform_other_usd_from_criptoya_api: Transforms the raw USD data for further use.
+    - load_other_prices_to_postgres: Loads the transformed data into the `raw_other_ars_prices` table.
+    - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
 
     Returns:
         NoneType: This function returns nothing as it's meant to define a DAG.
     """
 
-    extract_task = PythonOperator(
+    extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
         op_kwargs={"api_name": "usd"},
     )
 
-    transform_task = PythonOperator(
+    transform_task: PythonOperator = PythonOperator(
         task_id="transform_other_usd_from_criptoya_api",
         python_callable=transform_other_usd_from_criptoya_api,
         op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"},
     )
 
-    load_task = PythonOperator(
+    load_task: PythonOperator = PythonOperator(
         task_id="load_other_prices_to_postgres",
         python_callable=load_data_to_redshift,
         op_kwargs={
@@ -64,7 +64,7 @@ def elt_criptoya_other() -> NoneType:
         },
     )
 
-    alerting_email = PythonOperator(
+    alerting_email: PythonOperator = PythonOperator(
         task_id="alerting_email",
         python_callable=send_status_email,
         op_kwargs={
