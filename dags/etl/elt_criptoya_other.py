@@ -9,11 +9,14 @@ from dags.functions.extract_data import extract_data_from_api
 from dags.functions.load_data import load_data_to_redshift
 from dags.functions.transform_data import transform_other_usd_from_criptoya_api
 
+ALERT_EMAILS = ["darb302@gmail.com"]
+
 
 @dag(
     dag_id="elt_criptoya_other",
     catchup=False,
     tags=["criptoya"],
+    default_args={"email": ALERT_EMAILS},
 )
 def elt_criptoya_other() -> NoneType:
     """
@@ -34,7 +37,7 @@ def elt_criptoya_other() -> NoneType:
     extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
-        op_kwargs={"api_name": "usd"},
+        op_kwargs={"api_name": "usdd"},
     )
 
     transform_task: PythonOperator = PythonOperator(
