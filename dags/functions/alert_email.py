@@ -1,62 +1,90 @@
 """Alert email functions"""
 
-import ast
-from typing import Dict
+from datetime import datetime
+from typing import Any, Dict, Optional
 
-import pandas as pd
 from airflow.models import Variable
-from sqlalchemy import create_engine
-from sqlalchemy.exc import OperationalError
+from airflow.utils.email import send_email
+
+ALERT_EMAIL = Variable.get("email_to_send_alert")
 
 
-def connect_to_redshift_engine():
-    """
-    Establish a connection to the Redshift database using SQLAlchemy.
+def send_status_email(
+    etl_name: str, success: bool = True, context: Optional[Dict[str, Any]] = None
+) -> None:
+    """Sends an email notification indicating the success or failure of the ETL process.
 
-    Returns:
-        Connection: SQLAlchemy connection for Redshift.
-    """
-    try:
-        redshift_user = "2024_diego_rojas"
-        redshift_password = Variable.get("redshift_password")
-        redshift_host = (
-            "redshift-pda-cluster.cnuimntownzt.us-east-2.redshift.amazonaws.com"
-        )
-        redshift_port = 5439
-        redshift_db = "pda"
-
-        connection_string = f"redshift+psycopg2://{redshift_user}:{redshift_password}@{redshift_host}:{redshift_port}/{redshift_db}"
-
-        # Create an engine and immediately connect to Redshift
-        engine = create_engine(connection_string)
-        return engine
-
-    except OperationalError as e:
-        raise RuntimeError(f"An error occurred while connecting to Redshift: {str(e)}")
-
-
-def load_data_to_redshift(df_json: str, table_name: str) -> None:
-    """
-    Load data from a JSON string into the specified Redshift table.
+    This function sends an email notification based on the status of the ETL process. If the ETL
+    process failed, the email will include error information extracted from the context provided
+    by Airflow.
 
     Args:
-        df_json (str): Data in JSON format to be inserted.
-        table_name (str): Name of the table to insert the data into.
+        etl_name (str): The name of the ETL process.
+        success (bool): Indicates whether the ETL process was successful or not. Defaults to True.
+        context (Optional[Dict[str, Any]]): Airflow context dictionary containing task and DAG info.
+            If not provided and `success` is False, the email will have limited information.
+
+    Returns:
+        None: This function does not return any value.
     """
-    df_dict: Dict = ast.literal_eval(df_json)
-    df: pd.DataFrame = pd.DataFrame.from_dict(df_dict)
+    current_timestamp_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    connection = connect_to_redshift_engine()
+    if success:
+        subject = f"✅ ETL {etl_name}: Success"
+        body = f"""
+        <p>The ETL process for {etl_name} has completed successfully at {current_timestamp_at}.</p>
+        <p>No further actions are required.</p>
+        """
+    else:
+        subject = f"❌ ETL {etl_name}: Failure"
 
-    try:
-        df.to_sql(
-            table_name,
-            connection,
-            schema="2024_diego_rojas_schema",
-            if_exists="append",
-            index=False,
+        dag_id = context["dag"].dag_id if context and context.get("dag") else "Unknown"
+        task_id = (
+            context["task_instance"].task_id
+            if context and context.get("task_instance")
+            else "Unknown"
         )
-    except Exception as e:
-        raise RuntimeError(
-            f"An error occurred while loading data to Redshift: {str(e)}"
+        execution_date = (
+            context["execution_date"].strftime("%Y-%m-%d %H:%M:%S")
+            if context and context.get("execution_date")
+            else current_timestamp_at
         )
+        log_url = (
+            context["task_instance"].log_url
+            if context and context.get("task_instance")
+            else "Unavailable"
+        )
+        error = (
+            context.get("exception", "No error message available.")
+            if context
+            else "No error message available."
+        )
+
+        body = f"""
+        <p>The ETL process for {etl_name} has failed. Check details below:</p>
+        <p><b>Dag:</b> {dag_id}</p>
+        <p><b>Task:</b> {task_id}</p>
+        <p><b>Execution Date:</b> {execution_date}</p>
+        <p><b>Error:</b> {error}</p>
+        <p>For more details, please check the <a href="{log_url}">logs</a>.</p>
+        """
+
+    send_email(ALERT_EMAIL, subject, body)
+
+
+def on_failure_callback(etl_name: str, context: Dict[str, Any]) -> None:
+    """Callback function to be executed on task failure.
+
+    This function is intended to be used as a callback in Airflow tasks. It sends an email with
+    error information extracted from the provided context when the task fails.
+
+    Args:
+        etl_name (str): The name of the ETL process.
+        context (Dict[str, Any]): Airflow context dictionary containing task and DAG info. This
+            context is used to extract information about the failed task and include it in the
+            failure notification email.
+
+    Returns:
+        None: This function does not return any value.
+    """
+    send_status_email(etl_name, success=False, context=context)
