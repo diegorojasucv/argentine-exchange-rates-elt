@@ -98,7 +98,7 @@ Several stage models handle data transformations from the source. Below is an ex
 - **transform_data**: Transforms raw data.
 - **load_data**: Loads transformed data into a database.
 
-## 🚨 Alerting
+## Alerting
 
 The data pipeline implements an alerting system that notifies the status of ETL (Extract, Transform, Load) processes via email notifications. Below are the key components and how this system operates.
 
@@ -131,17 +131,31 @@ The data pipeline implements an alerting system that notifies the status of ETL 
 - **Redshift**: Used for data storage and processing, enabling scalable computation.
 - **Airflow**: Handles orchestration and scheduling of the data pipeline.
 
+### Pre-commit Hooks
+
+We have implemented a series of `pre-commit` hooks to ensure code quality before commits are made. These hooks help automate common checks and formatting tasks, ensuring that the code adheres to established standards.
+
+The following hooks have been configured in the `.pre-commit-config.yaml` file:
+
+- **YAML Linting** (`check-yaml`): Verifies that YAML files have correct syntax, which is essential for maintaining clean and error-free configuration files.
+- **End of File Fixer** (`end-of-file-fixer`): Ensures that all files end with a newline, improving compatibility and code cleanliness.
+- **Trailing Whitespace** (`trailing-whitespace`): Removes any trailing whitespace at the end of lines, which can often be added unintentionally.
+- **Python Code Formatter (Black)** (`black`): Automatically formats Python files using `Black`, ensuring a consistent code style throughout the project.
+- **Python Linter (Flake8)** (`flake8`): Detects syntax errors and style issues in Python code, improving readability and code quality.
+- **Import Sorting (isort)** (`isort`): Automatically organizes imports in Python files, following a defined standard, which helps maintain clean and maintainable code.
+- **Docstring Coverage (Interrogate)** (`interrogate`): Checks the coverage of docstrings in Python files, ensuring that at least 95% of the code is properly documented.
+
+### Tests
+- **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data.
+- **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`case when` statements). These tests ensure that all business logic is accurately reflected in the data pipeline.
+- **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
+
 ### GitHub Actions
 We implemented the following automated checks to maintain code quality and consistency:
 - **Docstring Coverage**: Ensures that all Python functions and methods are properly documented.
 - **Test Coverage**: Monitors the percentage of code covered by unit tests.
 - **Python Code Formatter**: Applies consistent formatting to all Python code using `Black`.
 - **SQL Linter**: Enforces SQL style and syntax rules using `SQLFluff`.
-
-### Tests
-- **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data.
-- **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`CASE WHEN` statements). These tests ensure that all business logic is accurately reflected in the data pipeline.
-- **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
 
 ## Documentation
 
