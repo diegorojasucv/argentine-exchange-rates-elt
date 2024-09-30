@@ -116,6 +116,7 @@ The data pipeline implements an alerting system that notifies the status of ETL 
 
 1. **Email Configuration**:
    - The system uses the Airflow variable `email_to_send_alert`, which was configured in the Airflow Variables.
+   - An email connection (`smtp_default`) was created in the Airflow Connections.
 2. **Sending Alerts**:
    - After completing a task in the DAG, its status (success or failure) is evaluated.
    - If the task is successful, a success email is sent informing that the ETL process has completed successfully.
