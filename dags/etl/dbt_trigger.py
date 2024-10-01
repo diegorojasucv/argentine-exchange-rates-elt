@@ -30,9 +30,11 @@ def dbt_trigger() -> NoneType:
         group_id="dbt_project",
         project_config=ProjectConfig(jaffle_shop_path),
         profile_config=redshift_db,
-        operator_args={"install_deps": True},
+        # operator_args={"install_deps": True},
         execution_config=venv_execution_config,
-        render_config=RenderConfig(select=["tag:main-run"], emit_datasets=False),
+        render_config=RenderConfig(
+            select=["+metrics_exchange_rates"], emit_datasets=False
+        ),
     )
 
     dbt_task
