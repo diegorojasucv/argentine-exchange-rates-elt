@@ -32,11 +32,10 @@ def dbt_trigger() -> NoneType:
         profile_config=redshift_db,
         operator_args={
             "install_deps": True,
-            "full_refresh": True,
         },
         execution_config=venv_execution_config,
         render_config=RenderConfig(
-            select=["int_exchange_rates_unioned+"], emit_datasets=False
+            select=["1+int_exchange_rates_unioned+"], emit_datasets=False
         ),
     )
 
