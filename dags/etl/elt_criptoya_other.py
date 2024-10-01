@@ -27,7 +27,6 @@ def elt_criptoya_other() -> NoneType:
         - extract_data_from_api: Fetches USD prices from other sources via the CriptoYa API.
         - transform_other_usd_from_criptoya_api: Transforms the raw USD data for further use.
         - load_other_prices_to_postgres: Loads the transformed data into the `raw_other_ars_prices` table.
-        - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
 
     Returns:
         NoneType: This function returns nothing as it's meant to define a DAG.

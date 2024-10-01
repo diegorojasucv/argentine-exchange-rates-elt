@@ -1,22 +1,13 @@
 """ETL for usdt-ars pair"""
 
-from functools import partial
 from types import NoneType
 
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
 
-from dags.functions.alert_email import on_failure_callback, send_status_email
 from dags.functions.extract_data import extract_data_from_api
 from dags.functions.load_data import load_data_to_redshift
 from dags.functions.transform_data import transform_usdt_from_criptoya_api
-
-ETL_NAME = "CriptoYa USDT-ARS"
-
-default_args = {
-    "email_on_failure": False,
-    "on_failure_callback": partial(on_failure_callback, ETL_NAME),
-}
 
 
 @dag(
@@ -35,7 +26,6 @@ def elt_criptoya_usdt() -> NoneType:
         - extract_data_from_api: Fetches USDT prices from the CriptoYa API.
         - transform_usdt_from_criptoya_api: Transforms the raw USDT data for further processing.
         - load_usdt_prices_to_postgres: Loads the transformed USDT prices into the 'raw_usdt_ars_prices' table.
-        - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
 
     Returns:
         NoneType: This function returns nothing as it's meant to define a DAG.
@@ -58,21 +48,11 @@ def elt_criptoya_usdt() -> NoneType:
         python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_usdt_from_criptoya_api') }}",
-            "table_name": "raw_usdt_ars_prices",
+            "table_name": "raw_usdt_ars_prices_test",
         },
     )
 
-    alerting_email: PythonOperator = PythonOperator(
-        task_id="alerting_email",
-        python_callable=send_status_email,
-        op_kwargs={
-            "etl_name": ETL_NAME,
-            "success": True,
-        },
-        trigger_rule="all_success",
-    )
-
-    extract_task >> transform_task >> load_task >> alerting_email
+    extract_task >> transform_task >> load_task
 
 
 elt_criptoya_usdt()

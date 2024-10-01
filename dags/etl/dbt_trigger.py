@@ -1,22 +1,12 @@
 """DAG that triggers a dbt task group for executing dbt commands"""
 
-from functools import partial
 from types import NoneType
 
 from airflow.decorators import dag
-from airflow.operators.python import PythonOperator
 from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
 
-from dags.functions.alert_email import on_failure_callback, send_status_email
 from include.constants import jaffle_shop_path, venv_execution_config
 from include.profiles import redshift_db
-
-ETL_NAME = "dbt trigger"
-
-default_args = {
-    "email_on_failure": False,
-    "on_failure_callback": partial(on_failure_callback, ETL_NAME),
-}
 
 
 @dag(
@@ -46,17 +36,7 @@ def dbt_trigger() -> NoneType:
         render_config=RenderConfig(emit_datasets=False),
     )
 
-    alerting_email: PythonOperator = PythonOperator(
-        task_id="alerting_email",
-        python_callable=send_status_email,
-        op_kwargs={
-            "etl_name": ETL_NAME,
-            "success": True,
-        },
-        trigger_rule="all_success",
-    )
-
-    dbt_task >> alerting_email
+    dbt_task
 
 
 dbt_trigger()
