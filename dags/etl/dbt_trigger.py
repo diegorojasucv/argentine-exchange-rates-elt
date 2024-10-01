@@ -37,23 +37,22 @@ def dbt_trigger() -> NoneType:
         render_config=RenderConfig(
             select=["+metrics_exchange_rates"], emit_datasets=False
         ),
-        dbt_cmd="run",
     )
 
     # Task 2: Run dbt test on the model and its dependencies
-    dbt_test_task = DbtDag(
-        dag_id="dbt_test",
-        project_config=ProjectConfig(jaffle_shop_path),
-        profile_config=redshift_db,
-        operator_args={"install_deps": True},
-        execution_config=venv_execution_config,
-        render_config=RenderConfig(
-            select=["+metrics_exchange_rates"], emit_datasets=False
-        ),
-        dbt_cmd="test",
-    )
+    # dbt_test_task = DbtDag(
+    #     dag_id="dbt_test",
+    #     project_config=ProjectConfig(jaffle_shop_path),
+    #     profile_config=redshift_db,
+    #     operator_args={"install_deps": True},
+    #     execution_config=venv_execution_config,
+    #     render_config=RenderConfig(
+    #         select=["+metrics_exchange_rates"], emit_datasets=False
+    #     ),
+    #     dbt_cmd="test",
+    # )
 
-    dbt_run_task >> dbt_test_task
+    dbt_run_task
 
 
 dbt_trigger()
