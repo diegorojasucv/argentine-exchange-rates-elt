@@ -36,7 +36,7 @@ def dbt_trigger() -> NoneType:
         },
         execution_config=venv_execution_config,
         render_config=RenderConfig(
-            select=["+metrics_exchange_rates"], emit_datasets=False
+            select=["int_exchange_rates_unioned+"], emit_datasets=False
         ),
     )
 
