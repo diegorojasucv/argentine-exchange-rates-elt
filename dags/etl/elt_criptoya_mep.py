@@ -48,7 +48,7 @@ def elt_criptoya_mep() -> NoneType:
         python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_mep_usd_from_criptoya_api') }}",
-            "table_name": "raw_mep_ars_prices_test",
+            "table_name": "raw_mep_ars_prices",
         },
     )
 

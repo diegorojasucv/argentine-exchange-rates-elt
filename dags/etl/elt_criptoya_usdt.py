@@ -48,7 +48,7 @@ def elt_criptoya_usdt() -> NoneType:
         python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_usdt_from_criptoya_api') }}",
-            "table_name": "raw_usdt_ars_prices_test",
+            "table_name": "raw_usdt_ars_prices",
         },
     )
 

@@ -48,7 +48,7 @@ def elt_bcra_indicators() -> NoneType:
         python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_bcra_from_api') }}",
-            "table_name": "raw_bcra_indicators_test",
+            "table_name": "raw_bcra_indicators",
         },
     )
 
