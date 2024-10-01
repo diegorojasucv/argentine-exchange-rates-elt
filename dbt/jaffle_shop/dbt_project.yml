@@ -22,9 +22,13 @@ require-dbt-version: [">=1.0.0", "<2.0.0"]
 data_tests:
   jaffle_shop:
     +store_failures: false
+    +tags: ["main-test"]
 
 models:
   jaffle_shop:
-      materialized: table
+      marts:
+        materialized: table
+        +tags: ["main-run"]
       staging:
         materialized: view
+        +tags: ["main-run"]
