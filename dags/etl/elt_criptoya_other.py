@@ -1,29 +1,19 @@
 """ETL for other exchange rates"""
 
-from functools import partial
 from types import NoneType
 
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
 
-from dags.functions.alert_email import on_failure_callback, send_status_email
 from dags.functions.extract_data import extract_data_from_api
 from dags.functions.load_data import load_data_to_redshift
 from dags.functions.transform_data import transform_other_usd_from_criptoya_api
-
-ETL_NAME = "CriptoYa Other"
-
-default_args = {
-    "email_on_failure": False,
-    "on_failure_callback": partial(on_failure_callback, ETL_NAME),
-}
 
 
 @dag(
     dag_id="elt_criptoya_other",
     catchup=False,
     tags=["criptoya"],
-    default_args=default_args,
 )
 def elt_criptoya_other() -> NoneType:
     """ETL pipeline for extracting, transforming, and loading Other USD prices from the CriptoYa API.
@@ -64,17 +54,7 @@ def elt_criptoya_other() -> NoneType:
         },
     )
 
-    alerting_email: PythonOperator = PythonOperator(
-        task_id="alerting_email",
-        python_callable=send_status_email,
-        op_kwargs={
-            "etl_name": ETL_NAME,
-            "success": True,
-        },
-        trigger_rule="all_success",
-    )
-
-    extract_task >> transform_task >> load_task >> alerting_email
+    extract_task >> transform_task >> load_task
 
 
 elt_criptoya_other()

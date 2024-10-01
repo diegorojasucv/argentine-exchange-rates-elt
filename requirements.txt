@@ -13,3 +13,4 @@ interrogate==1.7.0
 isort==5.13.2
 sqlfluff==3.2.0
 pandas==2.2.3
+sqlalchemy==1.4.54
