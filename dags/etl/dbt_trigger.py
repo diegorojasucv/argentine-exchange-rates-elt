@@ -1,5 +1,6 @@
 """DAG that triggers a dbt task group for executing dbt commands"""
 
+from datetime import timedelta
 from types import NoneType
 
 from airflow.decorators import dag
@@ -12,6 +13,7 @@ from include.profiles import redshift_db
 @dag(
     dag_id="dbt_trigger",
     catchup=False,
+    default_args={"retries": 5, "retry_delay": timedelta(minutes=1)},
     tags=["dbt_trigger"],
 )
 def dbt_trigger() -> NoneType:
