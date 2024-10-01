@@ -33,7 +33,7 @@ def dbt_trigger() -> NoneType:
         operator_args={"install_deps": True},
         execution_config=venv_execution_config,
         render_config=RenderConfig(
-            select=["+metrics_exchange_rates"], emit_datasets=False
+            select=["metrics_exchange_rates"], emit_datasets=False
         ),
     )
 
