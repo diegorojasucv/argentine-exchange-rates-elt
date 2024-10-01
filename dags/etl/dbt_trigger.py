@@ -3,7 +3,7 @@
 from types import NoneType
 
 from airflow.decorators import dag
-from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
+from cosmos import DbtDag, ProjectConfig, RenderConfig
 
 from include.constants import jaffle_shop_path, venv_execution_config
 from include.profiles import redshift_db
@@ -22,18 +22,19 @@ def dbt_trigger() -> NoneType:
 
     Task Details:
         - dbt_task: Trigger a build run. This means that a run job and a test job are executed.
-        - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
 
     Returns:
         None: This DAG doesn't return any values.
     """
-    dbt_task = DbtTaskGroup(
-        group_id="dbt_project",
+    dbt_task = DbtDag(
+        group_id="dbt_run",
         project_config=ProjectConfig(jaffle_shop_path),
         profile_config=redshift_db,
         operator_args={"install_deps": True},
         execution_config=venv_execution_config,
-        render_config=RenderConfig(emit_datasets=False),
+        render_config=RenderConfig(
+            select=["+metrics_exchange_rates"], emit_datasets=False
+        ),
     )
 
     dbt_task
