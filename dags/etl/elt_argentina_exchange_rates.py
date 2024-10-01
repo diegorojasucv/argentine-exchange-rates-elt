@@ -7,7 +7,7 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 
 with DAG(
     dag_id="elt_argentina_exchange_rates",
-    schedule_interval="@daily",
+    schedule_interval="0 14-21 * * 1-5",
     start_date=datetime(2024, 9, 23),
     catchup=False,
     tags=["main_elt"],
