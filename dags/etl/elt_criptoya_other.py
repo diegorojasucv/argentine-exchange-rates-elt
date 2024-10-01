@@ -50,7 +50,7 @@ def elt_criptoya_other() -> NoneType:
         python_callable=load_data_to_redshift,
         op_kwargs={
             "df_json": "{{ ti.xcom_pull(task_ids='transform_other_usd_from_criptoya_api') }}",
-            "table_name": "raw_other_ars_prices",
+            "table_name": "raw_other_ars_prices_test",
         },
     )
 
