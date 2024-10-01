@@ -49,14 +49,14 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
     engine = connect_to_redshift_engine()
 
     try:
-        with engine.connect() as conn:
-            df.to_sql(
-                table_name,
-                con=conn.connection,
-                schema="2024_diego_rojas_schema",
-                if_exists="append",
-                index=False,
-            )
+        df.to_sql(
+            name=table_name,
+            con=engine,
+            schema="2024_diego_rojas_schema",
+            if_exists="append",
+            index=False,
+            method="multi",
+        )
     except Exception as e:
         raise RuntimeError(
             f"An error occurred while loading data to Redshift: {str(e)}"
