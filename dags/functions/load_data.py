@@ -49,10 +49,10 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
     engine = connect_to_redshift_engine()
 
     try:
-        with engine.connect() as connection:
+        with engine.connect() as conn:
             df.to_sql(
                 table_name,
-                con=connection,
+                con=conn.connection,
                 schema="2024_diego_rojas_schema",
                 if_exists="append",
                 index=False,
