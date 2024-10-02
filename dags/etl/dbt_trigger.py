@@ -12,7 +12,6 @@ from include.profiles import redshift_db
 @dag(
     dag_id="dbt_trigger",
     catchup=False,
-    default_args={"retries": 5},
     tags=["dbt_trigger"],
 )
 def dbt_trigger() -> NoneType:
