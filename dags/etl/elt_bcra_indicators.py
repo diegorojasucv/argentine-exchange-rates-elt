@@ -23,6 +23,7 @@ default_args = {
     dag_id="elt_bcra_indicators",
     catchup=False,
     tags=["bcra"],
+    schedule_interval=None,
 )
 def elt_bcra_indicators() -> NoneType:
     """

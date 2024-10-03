@@ -24,6 +24,7 @@ default_args = {
     catchup=False,
     tags=["criptoya"],
     default_args=default_args,
+    schedule_interval=None,
 )
 def elt_criptoya_other() -> NoneType:
     """ETL pipeline for extracting, transforming, and loading Other USD prices from the CriptoYa API.

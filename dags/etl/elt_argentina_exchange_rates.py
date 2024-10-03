@@ -32,26 +32,31 @@ with DAG(
     elt_criptoya_usd_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_criptoya_usdt",
         trigger_dag_id="elt_criptoya_usdt",
+        wait_for_completion=True,
     )
 
     elt_criptoya_mep_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_criptoya_mep",
         trigger_dag_id="elt_criptoya_mep",
+        wait_for_completion=True,
     )
 
     elt_criptoya_other_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_criptoya_other",
         trigger_dag_id="elt_criptoya_other",
+        wait_for_completion=True,
     )
 
     elt_bcra_indicators_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="elt_bcra_indicators",
         trigger_dag_id="elt_bcra_indicators",
+        wait_for_completion=True,
     )
 
     dbt_trigger: TriggerDagRunOperator = TriggerDagRunOperator(
         task_id="dbt_trigger",
         trigger_dag_id="dbt_trigger",
+        wait_for_completion=True,
     )
 
     (

@@ -23,6 +23,7 @@ default_args = {
     dag_id="elt_criptoya_mep",
     catchup=False,
     tags=["criptoya"],
+    schedule_interval=None,
 )
 def elt_criptoya_mep() -> NoneType:
     """
