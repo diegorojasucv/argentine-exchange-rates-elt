@@ -13,6 +13,7 @@ from include.profiles import redshift_db
     dag_id="dbt_trigger",
     catchup=False,
     tags=["dbt_trigger"],
+    schedule_interval=None,
 )
 def dbt_trigger() -> NoneType:
     """

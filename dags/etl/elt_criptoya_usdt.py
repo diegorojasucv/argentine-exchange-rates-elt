@@ -14,6 +14,7 @@ from dags.functions.transform_data import transform_usdt_from_criptoya_api
     dag_id="elt_criptoya_usdt",
     catchup=False,
     tags=["criptoya"],
+    schedule_interval=None,
 )
 def elt_criptoya_usdt() -> NoneType:
     """

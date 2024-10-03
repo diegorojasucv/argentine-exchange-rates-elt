@@ -14,6 +14,7 @@ from dags.functions.transform_data import transform_bcra_from_api
     dag_id="elt_bcra_indicators",
     catchup=False,
     tags=["bcra"],
+    schedule_interval=None,
 )
 def elt_bcra_indicators() -> NoneType:
     """
