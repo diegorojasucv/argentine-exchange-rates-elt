@@ -32,11 +32,13 @@ stage as (
         total_ask_price,
         bid_price,
         total_bid_price,
-            avg(total_bid_price) over (partition by extracted_date) as avg_total_bid_price,
-            avg(total_ask_price) over (partition by extracted_date) as avg_total_ask_price,
+        avg(total_bid_price) over (partition by extracted_date) as avg_total_bid_price,
+        avg(total_ask_price) over (partition by extracted_date) as avg_total_ask_price,
 
-        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at) as updated_ars_at,
-        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', extracted_at) as extracted_ars_at
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', updated_at)
+            as updated_ars_at,
+        convert_timezone('UTC', 'America/Argentina/Buenos_Aires', extracted_at)
+            as extracted_ars_at
 
     from base
 
