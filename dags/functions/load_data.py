@@ -1,6 +1,6 @@
 """Load functions"""
 
-import ast
+import json
 from typing import Dict
 
 import pandas as pd
@@ -43,7 +43,7 @@ def load_data_to_redshift(df_json: str, table_name: str) -> None:
         df_json (str): Data in JSON format to be inserted.
         table_name (str): Name of the table to insert the data into.
     """
-    df_dict: Dict = ast.literal_eval(df_json)
+    df_dict: Dict = json.loads(df_json)
     df: pd.DataFrame = pd.DataFrame.from_dict(df_dict)
 
     connection = connect_to_redshift_engine()

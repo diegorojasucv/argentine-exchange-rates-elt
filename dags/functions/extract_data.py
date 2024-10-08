@@ -1,5 +1,6 @@
 """Extract functions"""
 
+import json
 from typing import Any, Dict, Optional
 
 import requests
@@ -40,7 +41,7 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
     try:
         response = requests.get(api_url, headers=headers, verify=False)
         response.raise_for_status()
-        data: Dict = response.json()
+        data: Dict = json.dumps(response.json())
         return data
     except requests.exceptions.RequestException as e:
         raise e
