@@ -21,6 +21,7 @@ default_args = {
 
 @dag(
     dag_id="elt_criptoya_mep",
+    description="Mep ETL",
     catchup=False,
     tags=["criptoya"],
     schedule_interval=None,

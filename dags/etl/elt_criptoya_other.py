@@ -21,6 +21,7 @@ default_args = {
 
 @dag(
     dag_id="elt_criptoya_other",
+    description="Other USD ETL",
     catchup=False,
     tags=["criptoya"],
     default_args=default_args,

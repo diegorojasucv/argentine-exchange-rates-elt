@@ -21,6 +21,7 @@ default_args = {
 
 @dag(
     dag_id="dbt_trigger",
+    description="dbt trigger",
     catchup=False,
     tags=["dbt_trigger"],
 )

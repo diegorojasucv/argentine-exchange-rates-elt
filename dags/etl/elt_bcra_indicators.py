@@ -21,6 +21,7 @@ default_args = {
 
 @dag(
     dag_id="elt_bcra_indicators",
+    description="BCRA ETL",
     catchup=False,
     tags=["bcra"],
     schedule_interval=None,
