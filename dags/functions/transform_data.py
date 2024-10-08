@@ -4,6 +4,7 @@ import ast
 from datetime import datetime
 from typing import Any, Dict
 
+import numpy as np
 import pandas as pd
 
 COLUMNS_TO_RENAME_USDT: Dict[str, str] = {
