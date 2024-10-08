@@ -14,6 +14,7 @@ from include.profiles import redshift_db
     catchup=False,
     tags=["dbt_trigger"],
     schedule_interval=None,
+    max_active_tasks=1,
 )
 def dbt_trigger() -> NoneType:
     """
