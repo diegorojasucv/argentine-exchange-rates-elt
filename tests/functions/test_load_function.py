@@ -1,8 +1,10 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
+import pandas as pd
 import pytest
 
-from functions.load_data import load_data_to_redshift
+from functions.load_data import (connect_to_redshift_engine,
+                                 load_data_to_redshift)
 
 
 @pytest.fixture
@@ -30,6 +32,7 @@ def test_connect_to_redshift_engine(mock_create_engine):
     Test connect_to_redshift_engine function to ensure it creates an engine.
     """
     connection_string = "redshift+psycopg2://2024_diego_rojas:password@redshift-pda-cluster.cnuimntownzt.us-east-2.redshift.amazonaws.com:5439/pda"
+    engine = connect_to_redshift_engine()
 
     mock_create_engine.assert_called_once()
 
