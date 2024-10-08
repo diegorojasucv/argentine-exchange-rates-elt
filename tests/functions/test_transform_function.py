@@ -1,14 +1,14 @@
-import pytest
-import pandas as pd
 import textwrap
 from datetime import datetime
 from io import StringIO
-from dags.functions.transform_data import (
-    transform_usdt_from_criptoya_api,
-    transform_mep_usd_from_criptoya_api,
-    transform_other_usd_from_criptoya_api,
-    transform_bcra_from_api,
-)
+
+import pandas as pd
+import pytest
+
+from functions.transform_data import (transform_bcra_from_api,
+                                      transform_mep_usd_from_criptoya_api,
+                                      transform_other_usd_from_criptoya_api,
+                                      transform_usdt_from_criptoya_api)
 
 
 @pytest.fixture
