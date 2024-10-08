@@ -15,6 +15,7 @@ from dags.functions.transform_data import transform_bcra_from_api
     catchup=False,
     tags=["bcra"],
     schedule_interval=None,
+    max_active_tasks=1,
 )
 def elt_bcra_indicators() -> NoneType:
     """

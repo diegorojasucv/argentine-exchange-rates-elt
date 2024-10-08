@@ -15,6 +15,7 @@ from dags.functions.transform_data import transform_other_usd_from_criptoya_api
     catchup=False,
     tags=["criptoya"],
     schedule_interval=None,
+    max_active_tasks=1,
 )
 def elt_criptoya_other() -> NoneType:
     """ETL pipeline for extracting, transforming, and loading Other USD prices from the CriptoYa API.
