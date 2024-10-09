@@ -36,7 +36,7 @@ def send_status_email(
         <p>No further actions are required.</p>
         """
     else:
-        subject = f"❌ ETL {etl_name}: Failure"
+        subject = f"❌ ETL {etl_name} Failure"
 
         dag_id = context["dag"].dag_id if context and context.get("dag") else "Unknown"
         task_id = (
@@ -61,7 +61,7 @@ def send_status_email(
         )
 
         body = f"""
-        <p>The ETL process for {etl_name} has failed. Check details below:</p>
+        <p>The ETL process has failed. Check details below:</p>
         <p><b>Dag:</b> {dag_id}</p>
         <p><b>Task:</b> {task_id}</p>
         <p><b>Execution Date:</b> {execution_date}</p>
