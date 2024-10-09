@@ -72,7 +72,7 @@ def send_status_email(
     send_email(ALERT_EMAIL, subject, body)
 
 
-def on_failure_callback(etl_name: str, context: Dict[str, Any]) -> None:
+def on_failure_callback(context: Dict[str, Any]) -> None:
     """Callback function to be executed on task failure.
 
     This function is intended to be used as a callback in Airflow tasks. It sends an email with
@@ -87,4 +87,4 @@ def on_failure_callback(etl_name: str, context: Dict[str, Any]) -> None:
     Returns:
         None: This function does not return any value.
     """
-    send_status_email(etl_name, success=False, context=context)
+    send_status_email(etl_name="", success=False, context=context)
