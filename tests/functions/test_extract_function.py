@@ -2,9 +2,8 @@ import json
 from unittest.mock import patch
 
 import pytest
+from functions.extract_data import extract_data_from_api
 from requests.exceptions import RequestException
-
-from dags.functions.extract_data import extract_data_from_api
 
 
 @pytest.fixture
