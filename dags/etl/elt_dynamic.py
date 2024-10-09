@@ -17,7 +17,6 @@ default_args = {
 
 
 def create_dynamic_elt_dag(process_type: str):
-
     """
     Dynamically creates an ETL DAG based on the provided process type.
 
@@ -44,7 +43,6 @@ def create_dynamic_elt_dag(process_type: str):
         tags=[process_type],
     )
     def dynamic_elt() -> NoneType:
-
         """
         Defines the dynamic ETL DAG structure.
 
