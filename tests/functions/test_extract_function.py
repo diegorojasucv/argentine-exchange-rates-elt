@@ -1,3 +1,4 @@
+import json
 from unittest.mock import patch
 
 import pytest
@@ -8,17 +9,17 @@ from dags.functions.extract_data import extract_data_from_api
 
 @pytest.fixture
 def mock_usdt_response():
-    return {"bitso": {"ask": 735.0, "totalAsk": 736.0}}
+    return '{"bitso": {"ask": 735.0, "totalAsk": 736.0}}'
 
 
 @pytest.fixture
 def mock_usd_response():
-    return {"blue": 750.0, "oficial": 365.0}
+    return '{"blue": 750.0, "oficial": 365.0}'
 
 
 @pytest.fixture
 def mock_bcra_response():
-    return {"dolar_oficial": 365.0}
+    return '{"dolar_oficial": 365.0}'
 
 
 @patch("requests.get")
@@ -28,7 +29,7 @@ def test_extract_usdt_data(mock_get, mock_usdt_response):
     mock_get.return_value.status_code = 200
 
     result = extract_data_from_api("usdt")
-    assert result == mock_usdt_response
+    assert json.loads(result) == mock_usdt_response
     mock_get.assert_called_once_with(
         "https://criptoya.com/api/usdt/ars/100", headers={}, verify=False
     )
@@ -41,7 +42,7 @@ def test_extract_usd_data(mock_get, mock_usd_response):
     mock_get.return_value.status_code = 200
 
     result = extract_data_from_api("usd")
-    assert result == mock_usd_response
+    assert json.loads(result) == mock_usd_response
     mock_get.assert_called_once_with(
         "https://criptoya.com/api/dolar", headers={}, verify=False
     )
@@ -54,7 +55,7 @@ def test_extract_bcra_data(mock_get, mock_bcra_response):
     mock_get.return_value.status_code = 200
 
     result = extract_data_from_api("bcra")
-    assert result == mock_bcra_response
+    assert json.loads(result) == mock_bcra_response
     mock_get.assert_called_once_with(
         "https://api.bcra.gob.ar/estadisticas/v2.0/principalesvariables",
         headers={"Accept-Language": "en-US"},

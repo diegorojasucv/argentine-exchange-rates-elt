@@ -1,14 +1,13 @@
-import pytest
-import pandas as pd
 import textwrap
 from datetime import datetime
 from io import StringIO
+
+import pandas as pd
+import pytest
+
 from dags.functions.transform_data import (
-    transform_usdt_from_criptoya_api,
-    transform_mep_usd_from_criptoya_api,
-    transform_other_usd_from_criptoya_api,
-    transform_bcra_from_api,
-)
+    transform_bcra_from_api, transform_mep_usd_from_criptoya_api,
+    transform_other_usd_from_criptoya_api, transform_usdt_from_criptoya_api)
 
 
 @pytest.fixture
@@ -33,59 +32,79 @@ def sample_usd_data():
     return textwrap.dedent(
         """
     {
-        'mayorista': {'price': 961.75, 'variation': 0.22, 'timestamp': 1726239600},
-        'oficial': {'price': 980.5, 'variation': 0.2, 'timestamp': 1726340062},
-        'ahorro': {'ask': 1568.8,
-        'bid': 940.5,
-        'variation': 0.2,
-        'timestamp': 1726340062},
-        'tarjeta': {'price': 1568.8, 'variation': 0.2, 'timestamp': 1726340062},
-        'blue': {'ask': 1265,
-        'bid': 1235,
-        'variation': -1.17,
-        'timestamp': 1726340047},
-        'cripto': {'ccb': {'ask': 1259.663,
-        'bid': 1249.665,
-        'variation': 0.43,
-        'timestamp': 1726340507},
-        'usdt': {'ask': 1258.46,
-        'bid': 1254,
-        'variation': 0.28,
-        'timestamp': 1726340507},
-        'usdc': {'ask': 1258.086,
-        'bid': 1256.984,
-        'variation': 0.25,
-        'timestamp': 1726340507}},
-        'mep': {'al30': {'24hs': {'price': 1226.69,
-            'variation': -1.07,
-            'timestamp': 1726257379},
-        'ci': {'price': 1219.59, 'variation': -1.19, 'timestamp': 1726255803}},
-        'gd30': {'24hs': {'price': 1223.37,
-            'variation': -1.2,
-            'timestamp': 1726257379},
-        'ci': {'price': 1220.77, 'variation': -0.81, 'timestamp': 1726255809}},
-        'letras': {'name': 'S30S4',
-        '24hs': {'price': 1228.36, 'variation': 0, 'timestamp': 1726084547},
-        'ci': {'price': 1241.65, 'variation': 0, 'timestamp': 1726168741}},
-        'bpo27': {'24hs': {'price': 1221.48,
-            'variation': -1.28,
-            'timestamp': 1726257141},
-        'ci': {'price': 1217.15, 'variation': -1.65, 'timestamp': 1726254083}}},
-        'ccl': {'al30': {'24hs': {'price': 1250.72,
-            'variation': -0.49,
-            'timestamp': 1726257352},
-        'ci': {'price': 1244.19, 'variation': -0.49, 'timestamp': 1726255801}},
-        'gd30': {'24hs': {'price': 1249.08,
-            'variation': -0.86,
-            'timestamp': 1726256458},
-        'ci': {'price': 1240.85, 'variation': -0.83, 'timestamp': 1726255430}},
-        'letras': {'name': 'S30S4',
-        '24hs': {'price': 1314.59, 'variation': 0, 'timestamp': 1725293303},
-        'ci': {'price': 1255.44, 'variation': 0, 'timestamp': 1726168739}},
-        'bpo27': {'24hs': {'price': 1247.58,
-            'variation': -0.64,
-            'timestamp': 1726255245},
-        'ci': {'price': 1250.08, 'variation': 0, 'timestamp': 1726077783}}}
+        "mayorista": {"price": 961.75, "variation": 0.22, "timestamp": 1726239600},
+        "oficial": {"price": 980.5, "variation": 0.2, "timestamp": 1726340062},
+        "ahorro": {
+            "ask": 1568.8,
+            "bid": 940.5,
+            "variation": 0.2,
+            "timestamp": 1726340062
+        },
+        "tarjeta": {"price": 1568.8, "variation": 0.2, "timestamp": 1726340062},
+        "blue": {
+            "ask": 1265,
+            "bid": 1235,
+            "variation": -1.17,
+            "timestamp": 1726340047
+        },
+        "cripto": {
+            "ccb": {
+                "ask": 1259.663,
+                "bid": 1249.665,
+                "variation": 0.43,
+                "timestamp": 1726340507
+            },
+            "usdt": {
+                "ask": 1258.46,
+                "bid": 1254,
+                "variation": 0.28,
+                "timestamp": 1726340507
+            },
+            "usdc": {
+                "ask": 1258.086,
+                "bid": 1256.984,
+                "variation": 0.25,
+                "timestamp": 1726340507
+            }
+        },
+        "mep": {
+            "al30": {
+                "24hs": {"price": 1226.69, "variation": -1.07, "timestamp": 1726257379},
+                "ci": {"price": 1219.59, "variation": -1.19, "timestamp": 1726255803}
+            },
+            "gd30": {
+                "24hs": {"price": 1223.37, "variation": -1.2, "timestamp": 1726257379},
+                "ci": {"price": 1220.77, "variation": -0.81, "timestamp": 1726255809}
+            },
+            "letras": {
+                "name": "S30S4",
+                "24hs": {"price": 1228.36, "variation": 0, "timestamp": 1726084547},
+                "ci": {"price": 1241.65, "variation": 0, "timestamp": 1726168741}
+            },
+            "bpo27": {
+                "24hs": {"price": 1221.48, "variation": -1.28, "timestamp": 1726257141},
+                "ci": {"price": 1217.15, "variation": -1.65, "timestamp": 1726254083}
+            }
+        },
+        "ccl": {
+            "al30": {
+                "24hs": {"price": 1250.72, "variation": -0.49, "timestamp": 1726257352},
+                "ci": {"price": 1244.19, "variation": -0.49, "timestamp": 1726255801}
+            },
+            "gd30": {
+                "24hs": {"price": 1249.08, "variation": -0.86, "timestamp": 1726256458},
+                "ci": {"price": 1240.85, "variation": -0.83, "timestamp": 1726255430}
+            },
+            "letras": {
+                "name": "S30S4",
+                "24hs": {"price": 1314.59, "variation": 0, "timestamp": 1725293303},
+                "ci": {"price": 1255.44, "variation": 0, "timestamp": 1726168739}
+            },
+            "bpo27": {
+                "24hs": {"price": 1247.58, "variation": -0.64, "timestamp": 1726255245},
+                "ci": {"price": 1250.08, "variation": 0, "timestamp": 1726077783}
+            }
+        }
     }
     """
     )
@@ -98,7 +117,13 @@ def sample_bcra_data():
         """
     {
         "results": [
-            {"idVariable": 1, "cdSerie": "serie1", "descripcion": "USD Official", "valor": 95.0, "fecha": "2021-09-30"}
+            {
+                "idVariable": 1,
+                "cdSerie": "serie1",
+                "descripcion": "USD Official",
+                "valor": 95.0,
+                "fecha": "2021-09-30"
+            }
         ]
     }
     """
