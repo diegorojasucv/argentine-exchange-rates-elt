@@ -44,7 +44,7 @@ def transform_usdt_from_criptoya_api(data: str, **kwargs: Any) -> str:
     Returns:
         str: JSON string of the transformed data.
     """
-    data_dict = json.loads(data)
+    data_dict: Dict[str, Any] = json.loads(data)
     df = pd.DataFrame.from_dict(data_dict)
     df = df.T.reset_index()
     df["updated_at"] = pd.to_datetime(df["time"], unit="s").astype(str)
