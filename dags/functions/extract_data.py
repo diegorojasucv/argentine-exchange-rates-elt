@@ -38,10 +38,7 @@ def extract_data_from_api(api_name: str, **kwargs: Any) -> Optional[Dict]:
 
     headers: Dict[str, str] = {"Accept-Language": "en-US"} if api_name == "bcra" else {}
 
-    try:
-        response = requests.get(api_url, headers=headers, verify=False)
-        response.raise_for_status()
-        data: Dict = json.dumps(response.json())
-        return data
-    except requests.exceptions.RequestException as e:
-        raise e
+    response = requests.get(api_url, headers=headers, verify=False)
+    response.raise_for_status()
+    data: Dict = json.dumps(response.json())
+    return data
