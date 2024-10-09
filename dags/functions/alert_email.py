@@ -36,7 +36,7 @@ def send_status_email(
         <p>No further actions are required.</p>
         """
     else:
-        subject = f"❌ ETL {etl_name}: Failure"
+        subject = f"❌ ETL {etl_name} Failure"
 
         dag_id = context["dag"].dag_id if context and context.get("dag") else "Unknown"
         task_id = (
@@ -61,7 +61,7 @@ def send_status_email(
         )
 
         body = f"""
-        <p>The ETL process for {etl_name} has failed. Check details below:</p>
+        <p>The ETL process has failed. Check details below:</p>
         <p><b>Dag:</b> {dag_id}</p>
         <p><b>Task:</b> {task_id}</p>
         <p><b>Execution Date:</b> {execution_date}</p>
@@ -72,7 +72,7 @@ def send_status_email(
     send_email(ALERT_EMAIL, subject, body)
 
 
-def on_failure_callback(etl_name: str, context: Dict[str, Any]) -> None:
+def on_failure_callback(context: Dict[str, Any]) -> None:
     """Callback function to be executed on task failure.
 
     This function is intended to be used as a callback in Airflow tasks. It sends an email with
@@ -87,4 +87,4 @@ def on_failure_callback(etl_name: str, context: Dict[str, Any]) -> None:
     Returns:
         None: This function does not return any value.
     """
-    send_status_email(etl_name, success=False, context=context)
+    send_status_email(etl_name="", success=False, context=context)
