@@ -42,7 +42,7 @@ def elt_criptoya_usdt() -> NoneType:
     extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
-        op_kwargs={"api_name": "criptoya-usdt"},
+        op_kwargs={"api_name": "usdt"},
     )
 
     transform_task: PythonOperator = PythonOperator(

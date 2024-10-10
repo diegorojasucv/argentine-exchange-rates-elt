@@ -18,6 +18,7 @@ for filename in os.listdir(config_filepath):
             line = line.replace("DAG_ID_HOLDER", config["dag_id"])
             line = line.replace("DESCRIPTION_HOLDER", config["description"])
             line = line.replace("TAG_HOLDER", config["tags"])
+            line = line.replace("SOURCE_API_HOLDER", config["source_api"])
             line = line.replace("FUNCTION_HOLDER", config["function"])
             line = line.replace("PROCESS_TYPE_HOLDER", config["process_type"])
             line = line.replace("TABLE_NAME_HOLDER", config["table_name"])

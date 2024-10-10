@@ -43,20 +43,20 @@ def elt_criptoya_other() -> NoneType:
     extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
-        op_kwargs={"api_name": "criptoya-other"},
+        op_kwargs={"api_name": "usd"},
     )
 
     transform_task: PythonOperator = PythonOperator(
-        task_id="transform_usdt_data",
+        task_id="transform_other_data",
         python_callable=transform_other_usd_from_criptoya_api,
         op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"},
     )
 
     load_task: PythonOperator = PythonOperator(
-        task_id="load_usdt_data_to_redshift",
+        task_id="load_other_data_to_redshift",
         python_callable=load_data_to_redshift,
         op_kwargs={
-            "df_json": "{{ ti.xcom_pull(task_ids='transform_usdt_data') }}",
+            "df_json": "{{ ti.xcom_pull(task_ids='transform_other_data') }}",
             "table_name": "raw_other_ars_prices_test",
         },
     )
@@ -65,7 +65,7 @@ def elt_criptoya_other() -> NoneType:
         task_id="alerting_email",
         python_callable=send_status_email,
         op_kwargs={
-            "etl_name": "usdt",
+            "etl_name": "other",
             "success": True,
         },
         trigger_rule="all_success",

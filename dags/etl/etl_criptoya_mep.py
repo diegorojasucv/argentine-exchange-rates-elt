@@ -43,7 +43,7 @@ def elt_criptoya_mep() -> NoneType:
     extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
-        op_kwargs={"api_name": "criptoya-mep"},
+        op_kwargs={"api_name": "usd"},
     )
 
     transform_task: PythonOperator = PythonOperator(

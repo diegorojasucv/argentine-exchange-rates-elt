@@ -23,7 +23,7 @@ default_args = {
     catchup=False,
     default_args=default_args,
     schedule_interval=None,
-    tags=["bcra"],
+    tags=["bcra-indicators"],
 )
 def elt_bcra_indicators() -> NoneType:
     """
@@ -46,16 +46,16 @@ def elt_bcra_indicators() -> NoneType:
     )
 
     transform_task: PythonOperator = PythonOperator(
-        task_id="transform_usdt_data",
+        task_id="transform_bcra_data",
         python_callable=transform_bcra_from_api,
         op_kwargs={"data": "{{ ti.xcom_pull(task_ids='extract_data_from_api') }}"},
     )
 
     load_task: PythonOperator = PythonOperator(
-        task_id="load_usdt_data_to_redshift",
+        task_id="load_bcra_data_to_redshift",
         python_callable=load_data_to_redshift,
         op_kwargs={
-            "df_json": "{{ ti.xcom_pull(task_ids='transform_usdt_data') }}",
+            "df_json": "{{ ti.xcom_pull(task_ids='transform_bcra_data') }}",
             "table_name": "raw_bcra_indicators_test",
         },
     )
@@ -64,7 +64,7 @@ def elt_bcra_indicators() -> NoneType:
         task_id="alerting_email",
         python_callable=send_status_email,
         op_kwargs={
-            "etl_name": "usdt",
+            "etl_name": "bcra",
             "success": True,
         },
         trigger_rule="all_success",

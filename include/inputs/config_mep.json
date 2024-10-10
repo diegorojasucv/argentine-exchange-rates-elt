@@ -2,6 +2,7 @@
     "dag_id": "criptoya_mep",
     "description": "ETL for MEP-ARS",
     "tags": "criptoya-mep",
+    "source_api": "usd",
     "function": "transform_mep_usd_from_criptoya_api",
     "process_type": "mep",
     "table_name": "raw_mep_ars_prices_test"

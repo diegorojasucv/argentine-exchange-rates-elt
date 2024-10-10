@@ -42,7 +42,7 @@ def elt_DAG_ID_HOLDER() -> NoneType:
     extract_task: PythonOperator = PythonOperator(
         task_id="extract_data_from_api",
         python_callable=extract_data_from_api,
-        op_kwargs={"api_name": "TAG_HOLDER"},
+        op_kwargs={"api_name": "SOURCE_API_HOLDER"},
     )
 
     transform_task: PythonOperator = PythonOperator(
