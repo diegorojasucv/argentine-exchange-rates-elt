@@ -1,0 +1,8 @@
+{
+    "dag_id": "criptoya_other",
+    "description": "ETL for OTHER-ARS",
+    "tags": "criptoya-other",
+    "function": "transform_other_usd_from_criptoya_api",
+    "process_type": "usdt",
+    "table_name": "raw_other_ars_prices_test"
+}

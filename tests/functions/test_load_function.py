@@ -3,12 +3,13 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 import pytest
 
-from include.load_data import connect_to_redshift_engine, load_data_to_redshift
+from include.functions.load_data import (connect_to_redshift_engine,
+                                         load_data_to_redshift)
 
 
 @pytest.fixture
 def mock_create_engine():
-    with patch("include.load_data.create_engine") as mock:
+    with patch("include.functions.load_data.create_engine") as mock:
         yield mock
 
 
@@ -48,7 +49,7 @@ def test_load_data_to_redshift(mock_create_engine, sample_json_data):
     """
     mock_engine = mock_create_engine.return_value
 
-    with patch("include.load_data.pd.DataFrame.to_sql") as mock_to_sql:
+    with patch("include.functions.load_data.pd.DataFrame.to_sql") as mock_to_sql:
         load_data_to_redshift(sample_json_data, "mock_table")
 
         mock_to_sql.assert_called_once_with(

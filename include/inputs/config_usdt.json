@@ -1,0 +1,8 @@
+{
+    "dag_id": "criptoya_usdt",
+    "description": "ETL for USDT-ARS",
+    "tags": "criptoya-usdt",
+    "function": "transform_usdt_from_criptoya_api",
+    "process_type": "usdt",
+    "table_name": "raw_usdt_ars_prices_test"
+}
