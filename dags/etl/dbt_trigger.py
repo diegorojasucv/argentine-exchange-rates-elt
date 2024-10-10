@@ -6,8 +6,9 @@ from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
 from cosmos import DbtTaskGroup, ProjectConfig, RenderConfig
 
-from include.alert_email import on_failure_callback, send_status_email
 from include.constants import jaffle_shop_path, venv_execution_config
+from include.functions.alert_email import (on_failure_callback,
+                                           send_status_email)
 from include.profiles import redshift_db
 
 default_args = {

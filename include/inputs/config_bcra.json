@@ -1,0 +1,9 @@
+{
+    "dag_id": "bcra_indicators",
+    "description": "ETL for BCRA indicators",
+    "tags": "bcra-indicators",
+    "source_api": "bcra",
+    "function": "transform_bcra_from_api",
+    "process_type": "bcra",
+    "table_name": "raw_bcra_indicators_test"
+}

@@ -30,7 +30,12 @@ with DAG(
         None: This DAG does not return any values.
     """
 
-    dags_to_trigger = ["elt_usdt", "elt_mep", "elt_other", "elt_bcra"]
+    dags_to_trigger = [
+        "elt_criptoya_usdt",
+        "elt_criptoya_mep",
+        "elt_criptoya_other",
+        "elt_bcra_indicators",
+    ]
 
     trigger_tasks = []
     for dag_info in dags_to_trigger:

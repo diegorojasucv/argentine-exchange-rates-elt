@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 from requests.exceptions import RequestException
 
-from include.extract_data import extract_data_from_api
+from include.functions.extract_data import extract_data_from_api
 
 
 @pytest.fixture
