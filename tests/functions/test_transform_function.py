@@ -5,12 +5,10 @@ from io import StringIO
 import pandas as pd
 import pytest
 
-from dags.functions.transform_data import (
-    transform_bcra_from_api,
-    transform_mep_usd_from_criptoya_api,
-    transform_other_usd_from_criptoya_api,
-    transform_usdt_from_criptoya_api,
-)
+from include.transform_data import (transform_bcra_from_api,
+                                    transform_mep_usd_from_criptoya_api,
+                                    transform_other_usd_from_criptoya_api,
+                                    transform_usdt_from_criptoya_api)
 
 
 @pytest.fixture

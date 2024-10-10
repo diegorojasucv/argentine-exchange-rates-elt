@@ -4,11 +4,11 @@ from types import NoneType
 
 from airflow.decorators import dag
 from airflow.operators.python import PythonOperator
-from functions.alert_email import on_failure_callback, send_status_email
-from functions.extract_data import extract_data_from_api
-from functions.load_data import load_data_to_redshift
 
+from include.alert_email import on_failure_callback, send_status_email
 from include.config import TRANSFORM_FUNCTIONS
+from include.extract_data import extract_data_from_api
+from include.load_data import load_data_to_redshift
 
 default_args = {
     "email_on_failure": False,
