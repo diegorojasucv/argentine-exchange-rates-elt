@@ -152,7 +152,7 @@ The following hooks have been configured in the `.pre-commit-config.yaml` file:
 
 ### Tests
 - **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data. Check the files: `src.yml`, `stg.yml`, `marts.yml`.
-- **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`case when` statements). These tests ensure that all business logic is accurately reflected in the data pipeline. Check the file: unit_test.yml.
+- **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`case when` statements). These tests ensure that all business logic is accurately reflected in the data pipeline. Check the file: `unit_test.yml`.
 - **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
 
 ### GitHub Actions
@@ -163,8 +163,37 @@ We implemented the following automated checks to maintain code quality and consi
 - **SQL Linter**: Enforces SQL style and syntax rules using `SQLFluff`.
 
 ## Documentation
-pip install sphinx
-pip install sphinx-rtd-theme
-cd docs
 
-.\make.bat
+To generate and view the documentation for this project, follow these steps:
+
+1. Install Sphinx by running the following command:
+    ```bash
+    pip install sphinx
+    ```
+
+2. Install the Sphinx Read the Docs theme:
+    ```bash
+    pip install sphinx-rtd-theme
+    ```
+
+3. Navigate to the `docs` directory:
+    ```bash
+    cd docs
+    ```
+
+4. Build the documentation using the Makefile:
+    - On Windows:
+      ```bash
+      .\make.bat html
+      ```
+    - On Linux/macOS:
+      ```bash
+      make html
+      ```
+
+5. Once the build is complete, open the generated HTML file in your browser:
+    ```bash
+    start _build/html/index.html
+    ```
+
+This will open the Sphinx-generated documentation in your default browser.
