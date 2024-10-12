@@ -1,4 +1,4 @@
-"""ETL for dynamic CriptoYa processes"""
+"""ETL for PROCESS_TYPE_HOLDER exchange rates"""
 
 from types import NoneType
 
@@ -18,14 +18,14 @@ default_args = {
 
 
 @dag(
-    dag_id="elt_DAG_ID_HOLDER",
+    dag_id="etl_DAG_ID_HOLDER",
     description="DESCRIPTION_HOLDER",
     catchup=False,
     default_args=default_args,
     schedule_interval=None,
     tags=["TAG_HOLDER"],
 )
-def elt_DAG_ID_HOLDER() -> NoneType:
+def etl_DAG_ID_HOLDER() -> NoneType:
     """
     Defines the dynamic ETL DAG structure.
 
@@ -73,4 +73,4 @@ def elt_DAG_ID_HOLDER() -> NoneType:
     extract_task >> transform_task >> load_task >> alerting_email
 
 
-elt_DAG_ID_HOLDER()
+etl_DAG_ID_HOLDER()

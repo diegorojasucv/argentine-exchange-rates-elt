@@ -1,4 +1,4 @@
-"""ETL for dynamic CriptoYa processes"""
+"""ETL for other exchange rates"""
 
 from types import NoneType
 
@@ -19,14 +19,14 @@ default_args = {
 
 
 @dag(
-    dag_id="elt_criptoya_other",
+    dag_id="etl_criptoya_other",
     description="ETL for OTHER-ARS",
     catchup=False,
     default_args=default_args,
     schedule_interval=None,
     tags=["criptoya-other"],
 )
-def elt_criptoya_other() -> NoneType:
+def etl_criptoya_other() -> NoneType:
     """
     Defines the dynamic ETL DAG structure.
 
@@ -74,4 +74,4 @@ def elt_criptoya_other() -> NoneType:
     extract_task >> transform_task >> load_task >> alerting_email
 
 
-elt_criptoya_other()
+etl_criptoya_other()

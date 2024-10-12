@@ -1,4 +1,4 @@
-"""ETL for dynamic CriptoYa processes"""
+"""ETL for bcra exchange rates"""
 
 from types import NoneType
 
@@ -18,14 +18,14 @@ default_args = {
 
 
 @dag(
-    dag_id="elt_bcra_indicators",
+    dag_id="etl_bcra_indicators",
     description="ETL for BCRA indicators",
     catchup=False,
     default_args=default_args,
     schedule_interval=None,
     tags=["bcra-indicators"],
 )
-def elt_bcra_indicators() -> NoneType:
+def etl_bcra_indicators() -> NoneType:
     """
     Defines the dynamic ETL DAG structure.
 
@@ -73,4 +73,4 @@ def elt_bcra_indicators() -> NoneType:
     extract_task >> transform_task >> load_task >> alerting_email
 
 
-elt_bcra_indicators()
+etl_bcra_indicators()

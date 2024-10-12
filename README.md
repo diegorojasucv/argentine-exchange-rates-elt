@@ -151,7 +151,7 @@ The following hooks have been configured in the `.pre-commit-config.yaml` file:
 - **Docstring Coverage (Interrogate)** (`interrogate`): Checks the coverage of docstrings in Python files, ensuring that at least 95% of the code is properly documented.
 
 ### Tests
-- **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data. Check the files: src.yml, stg.yml, marts.yml.
+- **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data. Check the files: `src.yml`, `stg.yml`, `marts.yml`.
 - **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`case when` statements). These tests ensure that all business logic is accurately reflected in the data pipeline. Check the file: unit_test.yml.
 - **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
 
@@ -163,5 +163,8 @@ We implemented the following automated checks to maintain code quality and consi
 - **SQL Linter**: Enforces SQL style and syntax rules using `SQLFluff`.
 
 ## Documentation
+pip install sphinx
+pip install sphinx-rtd-theme
+cd docs
 
-TBD
+.\make.bat
