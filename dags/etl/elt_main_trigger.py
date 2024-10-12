@@ -31,10 +31,10 @@ with DAG(
     """
 
     dags_to_trigger = [
-        "elt_criptoya_usdt",
-        "elt_criptoya_mep",
-        "elt_criptoya_other",
-        "elt_bcra_indicators",
+        "etl_criptoya_usdt",
+        "etl_criptoya_mep",
+        "etl_criptoya_other",
+        "etl_bcra_indicators",
     ]
 
     trigger_tasks = []

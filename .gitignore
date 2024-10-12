@@ -5,7 +5,6 @@ dbt/jaffle_shop/profiles.yml
 .dbt/jaffle_shop/profiles.yml
 
 # docs
-docs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

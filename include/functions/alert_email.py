@@ -79,7 +79,6 @@ def on_failure_callback(context: Dict[str, Any]) -> None:
     error information extracted from the provided context when the task fails.
 
     Args:
-        etl_name (str): The name of the ETL process.
         context (Dict[str, Any]): Airflow context dictionary containing task and DAG info. This
             context is used to extract information about the failed task and include it in the
             failure notification email.

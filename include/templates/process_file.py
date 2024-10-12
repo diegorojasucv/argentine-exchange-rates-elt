@@ -1,4 +1,4 @@
-"""ETL for dynamic CriptoYa processes"""
+"""ETL for PROCESS_TYPE_HOLDER exchange rates"""
 
 from types import NoneType
 
@@ -18,19 +18,22 @@ default_args = {
 
 
 @dag(
-    dag_id="elt_DAG_ID_HOLDER",
+    dag_id="etl_DAG_ID_HOLDER",
     description="DESCRIPTION_HOLDER",
     catchup=False,
     default_args=default_args,
     schedule_interval=None,
     tags=["TAG_HOLDER"],
 )
-def elt_DAG_ID_HOLDER() -> NoneType:
+def etl_DAG_ID_HOLDER() -> NoneType:
     """
-    Defines the dynamic ETL DAG structure.
+    ETL pipeline for extracting, transforming, and loading PROCESS_TYPE_HOLDER prices from APIs (CriptoYa or BCRA).
+
+    This DAG handles the process of fetching data from the CriptoYa API,
+    transforming the data, and loading it into a PostgreSQL or Redshift table.
 
     Tasks:
-        - extract_task: Fetches exchange rates from the CriptoYa and BCRA APIs.
+        - extract_task: Fetches exchange rates from the API.
         - transform_task: Transforms the raw data into the required format.
         - load_task: Loads the transformed data into a Redshift table.
         - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
@@ -73,4 +76,4 @@ def elt_DAG_ID_HOLDER() -> NoneType:
     extract_task >> transform_task >> load_task >> alerting_email
 
 
-elt_DAG_ID_HOLDER()
+etl_DAG_ID_HOLDER()
