@@ -84,11 +84,11 @@ Several stage models handle data transformations from the source. Below is an ex
 ![image](https://github.com/user-attachments/assets/9fb3fac8-9994-4483-8d84-063ebe5469b2)
 
 
-## DAGs
+## Airflow DAGs
 
 The DAGs were created using a dynamic approach following the [multiple file method](https://hevodata.com/learn/airflow-dynamic-dags/#2_Creating_Airflow_Dynamic_DAG_using_the_Multiple_File_Method), which is more scalable compared to the single-file approach.
 
-To implement this approach, JSON configuration files were placed in the input folder. A template file called `process_file.py` was created to define the structure of the DAGs. Finally, the `generate_dag` file is responsible for generating all the DAG files. This script iterates through the configuration files, creates a copy of the template in the DAGs folder, and overwrites the parameters in the template with those from the configuration files.
+To implement this approach, JSON configuration files were placed in the `input.py` folder. A template file called `process_file.py` was created to define the structure of the DAGs. Finally, the `generate_dag` file is responsible for generating all the DAG files. This script iterates through the configuration files, creates a copy of the template in the DAGs folder, and overwrites the parameters in the template with those from the configuration files.
 
 ### ETL
 - **elt_main_trigger.py**: This script triggers all the ELT DAGs and the dbt job.
@@ -97,11 +97,6 @@ To implement this approach, JSON configuration files were placed in the input fo
 - **elt_criptoya_usdt.py**: Focuses on the extraction and transformation of USDT (Tether) exchange rates from CriptoYa API.
 - **elt_criptoya_mep.py**: This ETL pipeline focuses on extracting MEP (USD) prices from the CriptoYa API.
 - **elt_bcra_indicators.py**: This ETL pipeline is responsible for extracting, transforming, and loading BCRA (Central Bank of Argentina) indicators data.
-
-## Functions
-- **extract_data**: Fetches exchange rates from APIs.
-- **transform_data**: Transforms raw data.
-- **load_data**: Loads transformed data into a database.
 
 ## Alerting
 
@@ -151,9 +146,20 @@ The following hooks have been configured in the `.pre-commit-config.yaml` file:
 - **Docstring Coverage (Interrogate)** (`interrogate`): Checks the coverage of docstrings in Python files, ensuring that at least 95% of the code is properly documented.
 
 ### Tests
-- **Data Quality Tests**: Built-in dbt tests like `not_null`, `unique`, and `recency` were integrated to ensure the integrity and freshness of the data. Check the files: `src.yml`, `stg.yml`, `marts.yml`.
-- **Unit Tests**: Custom tests were created to validate the correctness of key transformations, including date calculations, window functions, and conditional logic (`case when` statements). These tests ensure that all business logic is accurately reflected in the data pipeline. Check the file: `unit_test.yml`.
-- **Python Function Tests**: Python unit tests were implemented in the `test` folder to verify the consistency and accuracy of individual functions within the project.
+
+- **Data Quality Tests**: To ensure data integrity and freshness, built-in dbt tests such as `not_null`, `unique`, and `recency` have been integrated into the data pipeline. These tests are defined in the following files:
+  - `src.yml`
+  - `stg.yml`
+  - `marts.yml`
+
+- **Unit Tests**: Custom unit tests were created to validate key transformations within the data pipeline. These tests cover areas such as:
+  - Date calculations
+  - Window functions
+  - Conditional logic (e.g., `CASE WHEN` statements)
+  
+  These tests ensure that business logic is properly implemented and consistently reflected in the data pipeline. It was defined in the `unit_test.yml` file.
+
+- **Python Function Tests**: Python unit tests were implemented to verify the functionality and correctness of individual Python functions used in the project. These tests are located in the `test` folder and help ensure that the project’s Python code behaves as expected.
 
 ### GitHub Actions
 We implemented the following automated checks to maintain code quality and consistency:
@@ -164,7 +170,7 @@ We implemented the following automated checks to maintain code quality and consi
 
 ## Documentation
 
-To generate and view the documentation for this project, follow these steps:
+To view the documentation for this project, follow these steps:
 
 1. Install Sphinx by running the following command:
     ```bash
