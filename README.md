@@ -88,7 +88,7 @@ Several stage models handle data transformations from the source. Below is an ex
 
 The DAGs were created using a dynamic approach following the [multiple file method](https://hevodata.com/learn/airflow-dynamic-dags/#2_Creating_Airflow_Dynamic_DAG_using_the_Multiple_File_Method), which is more scalable compared to the single-file approach.
 
-To implement this approach, JSON configuration files were placed in the `input.py` folder. A template file called `process_file.py` was created to define the structure of the DAGs. Finally, the `generate_dag` file is responsible for generating all the DAG files. This script iterates through the configuration files, creates a copy of the template in the DAGs folder, and overwrites the parameters in the template with those from the configuration files.
+To implement this approach, JSON configuration files were placed in the `input` folder. A template file called `process_file.py` was created to define the structure of the DAGs. Finally, the `generate_dag.py` file is responsible for generating all the DAG files. This script iterates through the configuration files, creates a copy of the template in the DAGs folder, and overwrites the parameters in the template with those from the configuration files.
 
 ### ETL
 - **elt_main_trigger.py**: This script triggers all the ELT DAGs and the dbt job.
