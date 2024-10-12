@@ -181,17 +181,7 @@ To generate and view the documentation for this project, follow these steps:
     cd docs
     ```
 
-4. Build the documentation using the Makefile:
-    - On Windows:
-      ```bash
-      .\make.bat html
-      ```
-    - On Linux/macOS:
-      ```bash
-      make html
-      ```
-
-5. Once the build is complete, open the generated HTML file in your browser:
+4. Open the generated HTML file already created in your browser:
     ```bash
     start _build/html/index.html
     ```

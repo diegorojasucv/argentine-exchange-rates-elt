@@ -28,10 +28,13 @@ default_args = {
 )
 def etl_criptoya_mep() -> NoneType:
     """
-    Defines the dynamic ETL DAG structure.
+    ETL pipeline for extracting, transforming, and loading mep prices from APIs (CriptoYa or BCRA).
+
+    This DAG handles the process of fetching data from the CriptoYa API,
+    transforming the data, and loading it into a PostgreSQL or Redshift table.
 
     Tasks:
-        - extract_task: Fetches exchange rates from the CriptoYa and BCRA APIs.
+        - extract_task: Fetches exchange rates from the API.
         - transform_task: Transforms the raw data into the required format.
         - load_task: Loads the transformed data into a Redshift table.
         - alerting_email: Sends a email notification if all previous tasks are successful or if any task failed.
