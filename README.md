@@ -52,7 +52,7 @@ To get started, you'll need:
    - **Variable Name**: `redshift_password`
    - **Value**: Use the Redshift password obtained in the previous step
 
-7. After the above steps, unpuase all the DAGs and trigger the main one (`elt_argentina_exchange_rates`).
+7. After the above steps, unpuase all the DAGs and trigger the main one (`elt_main_trigger`).
 
 ## Data Pipeline
 ### 🏦Source
